@@ -4,24 +4,22 @@ import * as React from 'react';
 
 import TabBarIcon from '../components/TabBarIcon';
 
-import HomeScreen from '../screens/HomeScreen';
-import DiscoverScreen from '../screens/DiscoverScreen';
-
-import ExploreScreen from '../screens/ExploreScreen';
+import ExploreNavigator from './ExploreNavigator';
+import DiscoverNavigator from './DiscoverNavigator';
+import MyMoviesNavigator from './MyMoviesNavigator';
 
 const Tab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Explore';
 
-export default function TabNavigator({ navigation, route }) {
+export default function BottomTabNavigator({ navigation, route }) {
 
   return (
     <Tab.Navigator 
       initialRouteName={INITIAL_ROUTE_NAME}
-      tabBarOptions={{}}
     >
       <Tab.Screen
         name="Explore"
-        component={ExploreScreen}
+        component={ExploreNavigator}
         options={{
           title: 'Explore',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="theater-masks" iconFamily="FontAwesome5" />,
@@ -29,7 +27,7 @@ export default function TabNavigator({ navigation, route }) {
       />
       <Tab.Screen
         name="Discover"
-        component={DiscoverScreen}
+        component={DiscoverNavigator}
         options={{
           title: 'Discover',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="movie-filter" iconFamily="MaterialIcons"/>,
@@ -37,7 +35,7 @@ export default function TabNavigator({ navigation, route }) {
       />
       <Tab.Screen
         name="MyMovies"
-        component={HomeScreen}
+        component={MyMoviesNavigator}
         options={{
           title: 'MyMovies',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-home" iconFamily="Ionicons" />,

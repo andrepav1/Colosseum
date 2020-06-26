@@ -17,6 +17,8 @@ export default function useCachedResources() {
           ...Ionicons.font,
           'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
           'space-mono-bold': require('../assets/fonts/SpaceMono-Bold.ttf'),
+          'montserrat-regular': require('../assets/fonts/Montserrat-Regular.ttf'),
+          'montserrat-semi-bold': require('../assets/fonts/Montserrat-SemiBold.ttf'),
           Roboto: require('native-base/Fonts/Roboto.ttf'),
           Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
         });

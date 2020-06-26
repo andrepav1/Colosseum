@@ -12,4 +12,6 @@ export default {
   noticeBackground: tintColor,
   noticeText: '#fff',
   linkText: tintColor,
+  darkTextColour: '#444',
+  lightTextColour: '#010101'
 };

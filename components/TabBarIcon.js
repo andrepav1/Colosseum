@@ -1,4 +1,4 @@
-import { Ionicons, MaterialIcons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { View } from 'react-native';
 import * as React from 'react';
 
@@ -36,6 +36,15 @@ export default function TabBarIcon(props) {
     case "FontAwesome5":
       return (
         <FontAwesome5
+          name={props.name}
+          size={28}
+          style={{ marginBottom: -5 }}
+          color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+        />
+      );
+    case "MaterialCommunityIcons":
+      return (
+        <MaterialCommunityIcons
           name={props.name}
           size={28}
           style={{ marginBottom: -5 }}
