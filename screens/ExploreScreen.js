@@ -16,21 +16,26 @@ import Layout from '../constants/Layout';
 
 export default function ExploreScreen() {
 
+  const [darkMode, setDarkMode] = React.useState(false);
+
   const pressHandling = () => {
 
   }
 
   return (
     <View style={{ flex:1 }}>
-      <ScrollView style={Style.lightContainer} contentContainerStyle={{paddingTop: 0 }}>
+      <ScrollView style={darkMode?Style.darkContainer:Style.lightContainer} contentContainerStyle={{paddingTop: 0 }}>
 
         <MoviesCarousel movies={getMovies()} />
-        <MoviesPosterScrollView sectionName={"Popular Now"} movies={getMoviesTwo()} />
-        <Divider style={styles.dividerStyle} />
+
+        <MoviesPosterScrollView sectionName={"Popular Now"} movies={getMoviesTwo()} darkMode={darkMode} />
+        <Divider style={darkMode?Style.lightDividerStyle:Style.darkDividerStyle} />
+        <MoviesPosterScrollView sectionName={"At the Cinema"} movies={getMovies()} darkMode={darkMode} />
+        <Divider style={darkMode?Style.lightDividerStyle:Style.darkDividerStyle} />
         <MoviesScrollView movies={getMoviesThree()} />
-        <Divider style={styles.dividerStyle} />
-        <MoviesPosterScrollView sectionName={"At the Cinema"} movies={getMovies()} />
-        <MoviesPosterScrollView sectionName={"Colossal Movies"} movies={getMoviesThree()} />
+        <MoviesPosterScrollView sectionName={"At the Cinema"} movies={getMovies()} darkMode={darkMode} />
+        <Divider style={darkMode?Style.lightDividerStyle:Style.darkDividerStyle} />
+        <MoviesPosterScrollView sectionName={"Colossal Movies"} movies={getMoviesThree()} darkMode={darkMode} />
 
       </ScrollView>
     </View>
@@ -38,11 +43,7 @@ export default function ExploreScreen() {
 }
 
 const styles = StyleSheet.create({
-  dividerStyle: {
-    backgroundColor: "#00000055", 
-    width: "92%", 
-    alignSelf: "center",
-  }
+
 });
 
 const getMovies = () => [

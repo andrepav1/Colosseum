@@ -9,9 +9,9 @@ import Style from '../constants/Style'
 import Layout from '../constants/Layout'
 const { width, height } = Layout.window;
 
-const POSTER_PATH = 'http://image.tmdb.org/t/p/original/';
+const POSTER_PATH = 'http://image.tmdb.org/t/p/w780/';
 
-export default function MovieDeckCard({props, deckSwiper}) {
+export default function MovieDeckCard({props, deckSwiper, darkMode}) {
   // console.log(deckSwiper)
   const [card, setCard] = React.useState();
 
@@ -19,20 +19,20 @@ export default function MovieDeckCard({props, deckSwiper}) {
     <View style={{ flex: 1 }}>
       <CardFlip flipDirection={'x'} style={{ width: width-40, height: 540 }} ref={card => setCard(card)} >
         <TouchableWithoutFeedback onPress={() => card.flip()} >
-          <View style={[Style.lightCardContainer, { flex: 1 }]}>
+          <View style={[darkMode?Style.darkCardContainer:Style.lightCardContainer, { flex: 1 }]}>
             <View style={styles.imageView}>
               <Image style={{ resizeMode: "center", height: 480, borderRadius: 8 }} source={{ uri: POSTER_PATH + props.poster_path}} />
             </View>
             <View style={styles.smallTextView}>
-              <MonoTextBold style={[ Style.largeDarkText, { textAlign: "center", maxWidth: "90%"}]}>{props.title}</MonoTextBold>
+              <MonoTextBold style={[darkMode?Style.largeLightText:Style.largeDarkText, { textAlign: "center", maxWidth: "90%"}]}>{props.title}</MonoTextBold>
             </View>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => card.flip()} >
-          <View style={[Style.lightCardContainer, { flex: 1 }]}>
+          <View style={[darkMode?Style.darkCardContainer:Style.lightCardContainer, { flex: 1 }]}>
             <View style={styles.textView}>
-              <MonoTextBold style={[ Style.largeDarkText, { textAlign: "center", maxWidth: "90%", marginBottom: 16, marginTop: 20 }]}>{props.title}</MonoTextBold>
-              <MonoTextBold style={[ Style.smallDarkText, { textAlign: "center", maxWidth: "90%"}]}>{props.overview}</MonoTextBold>
+              <MonoTextBold style={[ darkMode?Style.largeLightText:Style.largeDarkText, { textAlign: "center", maxWidth: "90%", marginBottom: 16, marginTop: 20 }]}>{props.title}</MonoTextBold>
+              <MonoTextBold style={[ darkMode?Style.smallLightText:Style.smallDarkText, { textAlign: "center", maxWidth: "90%"}]}>{props.overview}</MonoTextBold>
             </View>
           </View>
         </TouchableWithoutFeedback>

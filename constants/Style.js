@@ -5,7 +5,11 @@ import Colors from './Colors'
 export default StyleSheet.create({
   darkContainer: {
     flex: 1,
-    backgroundColor: '#000000EE',
+    backgroundColor: '#020202E8',
+  },
+  softDarkContainer: {
+    flex: 1,
+    backgroundColor: '#020202CF',
   },
   lightContainer: {
     flex: 1,
@@ -24,7 +28,7 @@ export default StyleSheet.create({
     elevation: 4,
   },
   darkCardContainer: {
-    backgroundColor: "#252525",
+    backgroundColor: "#101010",
     borderRadius: 8, 
     shadowColor: "#000",
     shadowOffset: {
@@ -58,5 +62,17 @@ export default StyleSheet.create({
   largeLightText: {
     fontSize: 22,
     color: Colors.lightTextColour,
+  },
+  lightDividerStyle: {
+    backgroundColor: "#FFFFFF55", 
+    width: "92%", 
+    alignSelf: "center",
+    height: 0.5,
+  },
+  darkDividerStyle: {
+    backgroundColor: "#00000066", 
+    width: "92%", 
+    alignSelf: "center",
+    height: 0.5,
   }
 });

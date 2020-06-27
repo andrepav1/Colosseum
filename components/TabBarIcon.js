@@ -4,57 +4,57 @@ import * as React from 'react';
 
 import Colors from '../constants/Colors';
 
-export default function TabBarIcon(props) {
-  switch (props.iconFamily) {
+export default function TabBarIcon({iconFamily, name, focused, darkMode}) {
+  switch (iconFamily) {
     case "Ionicons":
       return (
         <Ionicons
-          name={props.name}
+          name={name}
           size={30}
           style={{ marginBottom: -3 }}
-          color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          color={focused ? Colors.tabIconSelected : (darkMode?Colors.tabIconDefaultDark:Colors.tabIconDefault)}
         />
       );
     case "MaterialIcons":
       return (
         <MaterialIcons
-          name={props.name}
+          name={name}
           size={32}
           style={{ marginBottom: 0 }}
-          color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          color={focused ? Colors.tabIconSelected : (darkMode?Colors.tabIconDefaultDark:Colors.tabIconDefault)}
         />
       );
     case "FontAwesome":
       return (
         <FontAwesome
-          name={props.name}
+          name={name}
           size={30}
           style={{ marginBottom: -3 }}
-          color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          color={focused ? Colors.tabIconSelected : (darkMode?Colors.tabIconDefaultDark:Colors.tabIconDefault)}
         />
       );
     case "FontAwesome5":
       return (
         <FontAwesome5
-          name={props.name}
+          name={name}
           size={28}
           style={{ marginBottom: -5 }}
-          color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          color={focused ? Colors.tabIconSelected : (darkMode?Colors.tabIconDefaultDark:Colors.tabIconDefault)}
         />
       );
     case "MaterialCommunityIcons":
       return (
         <MaterialCommunityIcons
-          name={props.name}
+          name={name}
           size={28}
           style={{ marginBottom: -5 }}
-          color={props.focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+          color={focused ? Colors.tabIconSelected : (darkMode?Colors.tabIconDefaultDark:Colors.tabIconDefault)}
         />
       );
     default:
       return (
         <View
-          style={{ backgroundColor: props.focused ? Colors.tabIconSelected : Colors.tabIconDefault, width: 20, height: 20 }}
+          style={{ backgroundColor: focused ? Colors.tabIconSelected : (darkMode?Colors.tabIconDefaultDark:Colors.tabIconDefault), width: 20, height: 20 }}
         />
       );
   }

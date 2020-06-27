@@ -8,7 +8,7 @@ import Colors from '../constants/Colors';
 import Style from '../constants/Style';
 import Layout from '../constants/Layout';
 
-const POSTER_PATH = 'https://image.tmdb.org/t/p/original/';
+const POSTER_PATH = 'https://image.tmdb.org/t/p/w300/';
 
 export default function MovieLandscapeCard({props}) {
   // console.log(props)

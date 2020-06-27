@@ -14,6 +14,8 @@ import Layout from '../constants/Layout';
 
 export default function DiscoverScreen() {
 
+  const [darkMode, setDarkMode] = React.useState(false);
+
   const [cards,setCards] = React.useState(getMovies());
   const [deckEmpty,setDeckEmpty] = React.useState(false);
 
@@ -31,11 +33,6 @@ export default function DiscoverScreen() {
     console.log("swipe bottom:", movie.title);
     
   }
-
-  const onTapHandler = (index) => {
-    console.log("tap:", index);
-    
-  }
   
   const onRefreshDeckHandler = () => {
     console.log("refresh deck");
@@ -43,8 +40,8 @@ export default function DiscoverScreen() {
   }
 
   return (
-    <View style={Style.lightContainer}>
-      <View style={{ flex: 1 }}>
+    <View style={darkMode?Style.softDarkContainer:Style.lightContainer}>
+      <View>
         <DeckSwiper
           overlayLabels={{
             left: { element: label('NOPE', 'red', '20deg', { top: 40, right: 30 }) },
@@ -54,8 +51,7 @@ export default function DiscoverScreen() {
           }}
           disableTopSwipe={true}
           cards={cards}
-          onTapCard={onTapHandler}
-          renderCard={card => <MovieDeckCard props={card} deckSwiper={this} />}
+          renderCard={card => <MovieDeckCard props={card} deckSwiper={this} darkMode={darkMode} />}
           onSwipedAll={() => {setDeckEmpty(true)}}
           onSwipedLeft={onSwipeLeftHandler}
           onSwipedRight={onSwipeRightHandler}
@@ -82,7 +78,7 @@ const styles = StyleSheet.create({
 
 const label = (title, color, rotation, extraStyle) => {
   return (
-    <View style={{ backgroundColor: "#FFFFFFAA", width: "100%", height: 540, borderRadius: 8 }}>
+    <View style={{ backgroundColor: "#FFFFFF66", width: "100%", height: 540, borderRadius: 8 }}>
       <MonoTextBold 
       style={{
         ...extraStyle, 

@@ -12,17 +12,18 @@ import Colors from '../constants/Colors';
 import Style from '../constants/Style';
 import Layout from '../constants/Layout';
 
-export default function MoviesPosterScrollView({sectionName, movies}) {
+export default function MoviesPosterScrollView({sectionName, movies, darkMode}) {
   // console.log(movies)
+
   return (
     <View style={styles.moviesContainer}>
       <View style={{ flexDirection: "row", }}>
         <View style={{ width: "75%" }}>
-          <MonoText style={[Style.mediumDarkText,{ textAlign: "left", paddingLeft: 16 }]}>{sectionName}</MonoText>
+          <MonoText style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ textAlign: "left", paddingLeft: 16 }]}>{sectionName}</MonoText>
         </View>
         <View style={{ width: "25%" }}>
           <TouchableOpacity onPress={() => {}}>
-            <MonoText style={[Style.mediumDarkText,{ textAlign: "right", paddingRight: 16 }]}>See All:</MonoText>
+            <MonoText style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ textAlign: "right", paddingRight: 16 }]}>See All:</MonoText>
           </TouchableOpacity>
         </View>
       </View>
@@ -45,6 +46,6 @@ const styles = StyleSheet.create({
     flex: 1, 
     flexDirection: "column", 
     height: 170, 
-    marginVertical: 4,
+    marginVertical: 8,
   }
 });
