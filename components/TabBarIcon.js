@@ -1,10 +1,10 @@
-import { Ionicons, MaterialIcons, MaterialCommunityIcons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, MaterialCommunityIcons, FontAwesome, FontAwesome5, Entypo } from '@expo/vector-icons';
 import { View } from 'react-native';
 import * as React from 'react';
 
 import Colors from '../constants/Colors';
 
-export default function TabBarIcon({iconFamily, name, focused, darkMode}) {
+export default function TabBarIcon({iconFamily, name, focused, darkMode, margin, padding, size}) {
   switch (iconFamily) {
     case "Ionicons":
       return (
@@ -37,8 +37,8 @@ export default function TabBarIcon({iconFamily, name, focused, darkMode}) {
       return (
         <FontAwesome5
           name={name}
-          size={28}
-          style={{ marginBottom: -5 }}
+          size={26}
+          style={{ marginBottom: -4 }}
           color={focused ? Colors.tabIconSelected : (darkMode?Colors.tabIconDefaultDark:Colors.tabIconDefault)}
         />
       );
@@ -46,8 +46,17 @@ export default function TabBarIcon({iconFamily, name, focused, darkMode}) {
       return (
         <MaterialCommunityIcons
           name={name}
+          size={size?size:30}
+          style={{ marginBottom: margin?margin:0 }}
+          color={focused ? Colors.tabIconSelected : (darkMode?Colors.tabIconDefaultDark:Colors.tabIconDefault)}
+        />
+      );
+    case "Entypo":
+      return (
+        <Entypo
+          name={name}
           size={28}
-          style={{ marginBottom: -5 }}
+          style={{ marginBottom: -4 }}
           color={focused ? Colors.tabIconSelected : (darkMode?Colors.tabIconDefaultDark:Colors.tabIconDefault)}
         />
       );

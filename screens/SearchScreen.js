@@ -3,20 +3,21 @@ import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 // app components
-import { MonoText } from '../components/StyledText';
+import { MonoText, MonoTextBold } from '../components/StyledText';
 
 // constants
 import Style from '../constants/Style'
 import Color from '../constants/Colors'
+import Layout from '../constants/Layout'
 
 import {connect} from 'react-redux';
 
-function MyMoviesScreen({ navigation, route, setDarkMode, darkMode }) {
+function SearchScreen({ navigation, route, setDarkMode, darkMode }) {
 
   return (
     <View style={{flex:1}}>
       <ScrollView style={darkMode?Style.darkContainer:Style.lightContainer}>
-      
+
       </ScrollView>
     </View>
   );
@@ -38,7 +39,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyMoviesScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen)
 
 
 const styles = StyleSheet.create({

@@ -2,18 +2,25 @@ import * as React from 'react';
 import { Image, View, TouchableOpacity, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import CardFlip from 'react-native-card-flip';
 
-import { MonoText, MonoTextBold } from './StyledText'
+import { MonoText, MonoTextBold } from '../StyledText'
 
 // constants
-import Style from '../constants/Style'
-import Layout from '../constants/Layout'
+import Colors from '../../constants/Colors';
+import Style from '../../constants/Style';
+import Layout from '../../constants/Layout';
+import {assignNumbersArrayToGenre} from '../../constants/MovieData';
 const { width, height } = Layout.window;
 
 const POSTER_PATH = 'http://image.tmdb.org/t/p/w780/';
 
 export default function MovieDeckCard({props, deckSwiper, darkMode}) {
-  // console.log(deckSwiper)
+
   const [card, setCard] = React.useState();
+  const [genres, setGenres] = React.useState(assignNumbersArrayToGenre(props.genre_ids));
+  
+  const onPressHandler = () => {
+    nav.navigate("MovieScreen", props);
+  }
 
   return (
     <View style={{ flex: 1 }}>

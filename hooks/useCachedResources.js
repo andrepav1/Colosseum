@@ -19,8 +19,6 @@ export default function useCachedResources() {
           'space-mono-bold': require('../assets/fonts/SpaceMono-Bold.ttf'),
           'montserrat-regular': require('../assets/fonts/Montserrat-Regular.ttf'),
           'montserrat-semi-bold': require('../assets/fonts/Montserrat-SemiBold.ttf'),
-          Roboto: require('native-base/Fonts/Roboto.ttf'),
-          Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service

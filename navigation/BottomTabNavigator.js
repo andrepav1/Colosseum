@@ -8,14 +8,17 @@ import ExploreNavigator from './ExploreNavigator';
 import DiscoverNavigator from './DiscoverNavigator';
 import MyMoviesNavigator from './MyMoviesNavigator';
 
+import SearchScreen from '../screens/SearchScreen';
+import MoreScreen from '../screens/MoreScreen';
+
 import Color from '../constants/Colors'
 
 const Tab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Explore';
 
-export default function BottomTabNavigator({ navigation, route }) {
+import {connect} from 'react-redux';
 
-  const [darkMode, setDarkMode] = React.useState(false);
+function BottomTabNavigator({ navigation, darkMode }) {
 
   return (
     <Tab.Navigator 
@@ -36,11 +39,19 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          title: 'Search',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-search" iconFamily="Ionicons" darkMode={darkMode} />,
+        }}
+      />
+      <Tab.Screen
         name="Discover"
         component={DiscoverNavigator}
         options={{
-          title: 'Discover',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="movie-filter" iconFamily="MaterialIcons" darkMode={darkMode} />,
+          title: '',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="cards" iconFamily="MaterialCommunityIcons" size={46} margin={-16} darkMode={darkMode} />,
         }}
       />
       <Tab.Screen
@@ -48,10 +59,26 @@ export default function BottomTabNavigator({ navigation, route }) {
         component={MyMoviesNavigator}
         options={{
           title: 'MyMovies',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-home" iconFamily="Ionicons" darkMode={darkMode} />,
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="library-movie" iconFamily="MaterialCommunityIcons" darkMode={darkMode} />,
+        }}
+      />
+      <Tab.Screen
+        name="More"
+        component={MoreScreen}
+        options={{
+          title: 'More',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="dots-three-horizontal" iconFamily="Entypo" darkMode={darkMode} />,
         }}
       />
     </Tab.Navigator>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    darkMode: state.GlobalSettings.darkMode
+  }
+}
+
+export default connect(mapStateToProps)(BottomTabNavigator);
 

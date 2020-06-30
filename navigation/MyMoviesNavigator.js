@@ -6,7 +6,13 @@ import MyMoviesScreen from '../screens/MyMoviesScreen';
 const Tab = createStackNavigator();
 const INITIAL_ROUTE_NAME = 'Discover';
 
-export default function MyMoviesNavigator({ navigation, route }) {
+// constants
+import Style from '../constants/Style'
+import Color from '../constants/Colors'
+
+import {connect} from 'react-redux';
+
+function MyMoviesNavigator({ navigation, darkMode }) {
 
   return (
     <Tab.Navigator 
@@ -17,11 +23,23 @@ export default function MyMoviesNavigator({ navigation, route }) {
         component={MyMoviesScreen}
         options={{
           title: null,
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="movie-filter" iconFamily="MaterialIcons"/>,
-          headerShown: true 
+          headerShown: true, 
+          headerStyle: {
+            backgroundColor: darkMode?Color.darkHeaderColor:Color.lightHeaderColor,
+            elevation: darkMode?0:8, // remove shadow on Android
+            shadowOpacity: darkMode?0:0.2, // remove shadow on iOS
+          },
         }}
       />
     </Tab.Navigator>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    darkMode: state.GlobalSettings.darkMode
+  }
+}
+
+export default connect(mapStateToProps)(MyMoviesNavigator);
 

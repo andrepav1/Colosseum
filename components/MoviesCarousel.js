@@ -5,7 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 import uuid from 'uuid-random';
 
 // app components
-import MovieCarouselCard from './MovieCarouselCard';
+import MovieCarouselCard from './movieCards/MovieCarouselCard';
 import { MonoText, MonoTextBold } from './StyledText';
 
 // constants
@@ -14,8 +14,11 @@ import Style from '../constants/Style';
 import Layout from '../constants/Layout';
 const { width, height } = Layout.window;
 
-export default function MoviesCarousel({movies}) {
+export default function MoviesCarousel({movies, nav, setLoaded }) {
   // console.log(movies)
+
+  const [loadingComplete, setLoadingComplete] = React.useState(false);
+
   return (
     <View style={styles.moviesContainer}>
       <Carousel
@@ -25,9 +28,9 @@ export default function MoviesCarousel({movies}) {
         autoplayInterval={8000}
         autoplayDelay={3000}
         data={movies}
-        renderItem={({item, index}) => <MovieCarouselCard props={item} />}
+        renderItem={({item, index}) => <MovieCarouselCard props={item} nav={nav} setLoaded={setLoaded}/>}
         sliderWidth={width}
-        itemWidth={width*0.78}
+        itemWidth={290}
       />
     </View>
   );
@@ -36,6 +39,6 @@ export default function MoviesCarousel({movies}) {
 const styles = StyleSheet.create({
   moviesContainer: {
     flex: 1, 
-    height: 190, 
+    height: 180, 
   }
 });
