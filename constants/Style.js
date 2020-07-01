@@ -65,7 +65,7 @@ export default StyleSheet.create({
   },
   lightDividerStyle: {
     backgroundColor: "#FFFFFF55", 
-    width: "92%", 
+    width: "94%", 
     alignSelf: "center",
     height: 0.5,
   },

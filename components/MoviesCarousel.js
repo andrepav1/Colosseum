@@ -6,6 +6,7 @@ import uuid from 'uuid-random';
 
 // app components
 import MovieCarouselCard from './movieCards/MovieCarouselCard';
+import CarouselProgressIndicator from './CarouselProgressIndicator';
 import { MonoText, MonoTextBold } from './StyledText';
 
 // constants
@@ -17,21 +18,28 @@ const { width, height } = Layout.window;
 export default function MoviesCarousel({movies, nav, setLoaded }) {
   // console.log(movies)
 
+  const carouselRef = React.useRef();
+  const[currIndex, setCurrIndex] = React.useState(0);
   const [loadingComplete, setLoadingComplete] = React.useState(false);
 
   return (
     <View style={styles.moviesContainer}>
       <Carousel
-        containerCustomStyle={{}}
+        ref={carouselRef}
         autoplay={true}
         loop={true}
-        autoplayInterval={8000}
+        autoplayInterval={5000}
         autoplayDelay={3000}
         data={movies}
-        renderItem={({item, index}) => <MovieCarouselCard props={item} nav={nav} setLoaded={setLoaded}/>}
+        renderItem={({item}) => <MovieCarouselCard props={item} nav={nav} setLoaded={setLoaded}/>}
         sliderWidth={width}
         itemWidth={290}
+        inactiveSlideOpacity={0.2}
+        onSnapToItem={setCurrIndex}
       />
+      <View style={{ position: "absolute", top: 184, alignSelf: "center" }}>
+        <CarouselProgressIndicator current={currIndex} total={movies.length} />
+      </View>
     </View>
   );
 }
@@ -39,6 +47,7 @@ export default function MoviesCarousel({movies, nav, setLoaded }) {
 const styles = StyleSheet.create({
   moviesContainer: {
     flex: 1, 
-    height: 180, 
+    height: 190,
+    paddingBottom: 10,
   }
 });

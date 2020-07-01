@@ -15,6 +15,7 @@ import DataErrorComponent from '../components/DataErrorComponent';
 import Colors from '../constants/Colors';
 import Style from '../constants/Style';
 import Layout from '../constants/Layout';
+const { width, height } = Layout.window;
 
 import { useQuery } from '@apollo/react-hooks';
 
@@ -34,37 +35,36 @@ function ExploreScreen({ navigation, route, darkMode }) {
   // useState Hooks 
   const [carouselLoaded, setCarouselLoaded] = React.useState(false);
 
-
   // =================================================================
   // useQuery Hooks
   const popularMoviesResponse = useQuery(MOVIE_POPULAR);
-  const TopRatedMoviesResponse = useQuery(MOVIE_TOP_RATED);
-  const MovieNowPlayingResponse = useQuery(MOVIE_NOW_PLAYING);
+  const topRatedMoviesResponse = useQuery(MOVIE_TOP_RATED);
+  const movieNowPlayingResponse = useQuery(MOVIE_NOW_PLAYING);
 
   // =================================================================
   // Rendering loading component when data is loading 
   if (popularMoviesResponse.loading) return <DataLoadingComponent />;
-  if (TopRatedMoviesResponse.loading) return <DataLoadingComponent />;
-  if (MovieNowPlayingResponse.loading) return <DataLoadingComponent />;
+  if (topRatedMoviesResponse.loading) return <DataLoadingComponent />;
+  if (movieNowPlayingResponse.loading) return <DataLoadingComponent />;
 
   
   // =================================================================
   // Rendering loading component when data is refetching 
   if (popularMoviesResponse.networkStatus == 4) return <DataLoadingComponent />;
-  if (TopRatedMoviesResponse.networkStatus == 4) return <DataLoadingComponent />;
-  if (MovieNowPlayingResponse.networkStatus == 4) return <DataLoadingComponent />;
+  if (topRatedMoviesResponse.networkStatus == 4) return <DataLoadingComponent />;
+  if (movieNowPlayingResponse.networkStatus == 4) return <DataLoadingComponent />;
   
   // =================================================================
   // Rendering error component if at least one error occurs 
-  if (popularMoviesResponse.error) return <DataErrorComponent />;
-  if (TopRatedMoviesResponse.error) return <DataErrorComponent />;
-  if (MovieNowPlayingResponse.error) return <DataErrorComponent />;
+  if (popularMoviesResponse.error) return <DataErrorComponent props={popularMoviesResponse} />;
+  if (topRatedMoviesResponse.error) return <DataErrorComponent props={topRatedMoviesResponse}/>;
+  if (movieNowPlayingResponse.error) return <DataErrorComponent props={movieNowPlayingResponse} />;
 
   // =================================================================
   // DESTRUCTURING RESPONSE OBJECTS
   const { data: { moviePopular }} = popularMoviesResponse;
-  const { data: { movieTopRated }} = TopRatedMoviesResponse;
-  const { data: { movieNowPlaying }} = MovieNowPlayingResponse;
+  const { data: { movieTopRated }} = topRatedMoviesResponse;
+  const { data: { movieNowPlaying }} = movieNowPlayingResponse;
 
   
   // =================================================================

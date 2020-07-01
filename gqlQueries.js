@@ -40,7 +40,7 @@ query {
 `;
 
 const MOVIE_RECOMMENDATIONS = gql`
-query($id: String!) {
+query($id: ID!) {
   movieRecommendations(id: $id) {
     id,
     title,
@@ -66,18 +66,39 @@ query {
 `;
 
 const MOVIE_INFO = gql`
-query($id: String!) {
+query($id: ID!) {
   movieInfo(id: $id) {
     id,
     title,
     overview,
     poster_path,
+    release_date,
+    tagline,
+    genres {
+      id,
+      name
+    },
+    production_companies {
+      name
+    },
+    production_countries {
+      name
+    }
+    spoken_languages {
+      name
+    },
+    original_language,
+    original_title,
+    popularity,
+    vote_average,
+    vote_count,
+    runtime
   }
 }
 `;
 
 const SEARCH_MOVIE = gql`
-query($name: String!) {
+query($name: ID!) {
   searchMovie(name: $name) {
     id,
     title,
@@ -89,7 +110,7 @@ query($name: String!) {
 `;
 
 const MOVIE_VIDEOS = gql`
-query($id: String!) {
+query($id: ID!) {
   movieVideos(id: $id) {
     id,
     key,
@@ -101,7 +122,7 @@ query($id: String!) {
 `;
 
 const MOVIE_IMAGES = gql`
-query($id: String!) {
+query($id: ID!) {
   movieImages(id: $id) {
     backdrops {
       file_path
@@ -114,7 +135,7 @@ query($id: String!) {
 `;
 
 const MOVIE_POSTER_IMAGES = gql`
-query($id: String!) {
+query($id: ID!) {
   movieImages(id: $id) {
     posters {
       file_path
@@ -122,12 +143,71 @@ query($id: String!) {
   }
 }
 `;
+
 const MOVIE_BACKDROP_IMAGES = gql`
-query($id: String!) {
+query($id: ID!) {
   movieImages(id: $id) {
     backdrops {
       file_path
     }
+  }
+}
+`;
+
+const MOVIE_SIMILAR = gql`
+query($id: ID!) {
+  movieSimilar(id: $id) {
+    id,
+    title,
+    poster_path,
+  }
+}
+`;
+
+const MOVIE_KEYWORDS = gql`
+query($id: ID!) {
+  movieKeywords(id: $id) {
+    id,
+    name,
+  }
+}
+`;
+
+const MOVIE_CREDITS = gql`
+query($id: ID!) {
+  movieCredits(id: $id) {
+    cast {
+      id,
+      name
+    }
+    crew {
+      id,
+      name
+    }
+  }
+}
+`;
+
+const MOVIE_CAST = gql`
+query($id: ID!) {
+  movieCredits(id: $id) {
+    cast {
+      id,
+      name, 
+      character,
+      profile_path
+    }
+  }
+}
+`;
+
+const PERSON_INFO = gql`
+query($id: ID!) {
+  personInfo(id: $id) {
+    id,
+    name, 
+    biography,
+    profile_path,
   }
 }
 `;
@@ -144,4 +224,9 @@ export {
   MOVIE_IMAGES,
   MOVIE_POSTER_IMAGES,
   MOVIE_BACKDROP_IMAGES,
+  MOVIE_SIMILAR,
+  MOVIE_KEYWORDS,
+  MOVIE_CREDITS,
+  MOVIE_CAST,
+  PERSON_INFO
 };

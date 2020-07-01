@@ -4,6 +4,7 @@ import { CommonActions } from '@react-navigation/native';
 
 import ExploreScreen from '../screens/ExploreScreen';
 import MovieScreen from '../screens/MovieScreen';
+import PersonScreen from '../screens/PersonScreen';
 
 import Color from '../constants/Colors'
 
@@ -23,7 +24,6 @@ function ExploreNavigator({ navigation, darkMode }) {
         component={ExploreScreen}
         options={{
           title: null,
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="movie-filter" iconFamily="MaterialIcons"/>,
           headerShown: true, 
           headerStyle: {
             backgroundColor: darkMode?Color.darkHeaderColor:Color.lightHeaderColor,
@@ -37,7 +37,19 @@ function ExploreNavigator({ navigation, darkMode }) {
         component={MovieScreen}
         options={{
           title: null,
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="movie-filter" iconFamily="MaterialIcons"/>,
+          headerShown: true, 
+          headerStyle: {
+            backgroundColor: darkMode?Color.darkHeaderColor:Color.lightHeaderColor,
+            elevation: darkMode?0:8, // remove shadow on Android
+            shadowOpacity: darkMode?0:0.2, // remove shadow on iOS
+          },
+        }}
+      />
+      <Tab.Screen
+        name="PersonScreen"
+        component={PersonScreen}
+        options={{
+          title: null,
           headerShown: true, 
           headerStyle: {
             backgroundColor: darkMode?Color.darkHeaderColor:Color.lightHeaderColor,

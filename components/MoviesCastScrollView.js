@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import uuid from 'uuid-random';
 
 // app components
-import MoviePortraitCard from './movieCards/MoviePortraitCard';
+import MovieCastCard from './movieCards/MovieCastCard';
 import { MonoText, MonoTextBold } from './StyledText';
 
 // constants
@@ -12,16 +12,16 @@ import Colors from '../constants/Colors';
 import Style from '../constants/Style';
 import Layout from '../constants/Layout';
 
-export default function MoviesPosterScrollView({sectionName, movies, darkMode, nav}) {
+export default function MoviesCastScrollView({sectionName, cast, darkMode, nav}) {
   // console.log(movies)
 
-  if(movies.length == 0) return null;
+  if(cast.length == 0) return null;
 
   return (
-    <View style={styles.moviesContainer}>
+    <View style={styles.castContainer}>
       <View style={{ flexDirection: "row", }}>
         <View style={{ width: "70%" }}>
-          <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ textAlign: "left", paddingLeft: 16 }]}>{sectionName}</MonoTextBold>
+          <MonoTextBold style={[darkMode?Style.largeLightText:Style.largeDarkText,{ textAlign: "left", paddingLeft: 10 }]}>Cast</MonoTextBold>
         </View>
         <View style={{ width: "30%" }}>
           {/* <TouchableOpacity onPress={() => {}}>
@@ -30,11 +30,11 @@ export default function MoviesPosterScrollView({sectionName, movies, darkMode, n
         </View>
       </View>
 
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={ { paddingHorizontal: 10, marginTop: 6 }}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={ { paddingHorizontal: 6, marginTop: 6 }}>
       {
-        movies.map(movie => (
-          <View key={uuid()} style={{paddingHorizontal: 4 }}>
-            <MoviePortraitCard props={movie} nav={nav} darkMode={darkMode} />
+        cast.map(cast => (
+          <View key={uuid()} style={{ paddingHorizontal: 4 }}>
+            <MovieCastCard props={cast} nav={nav} darkMode={darkMode} />
           </View>
         ))
       }
@@ -44,12 +44,10 @@ export default function MoviesPosterScrollView({sectionName, movies, darkMode, n
   );
 }
 
-
 const styles = StyleSheet.create({
-  moviesContainer: {
+  castContainer: {
     flex: 1, 
-    flexDirection: "column", 
-    height: 190, 
-    marginVertical: 8,
+    flexDirection: "column",  
+    marginVertical: 2,
   }
 });

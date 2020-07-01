@@ -3,11 +3,23 @@ import { Image, View, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { MonoText, MonoTextBold } from './StyledText'
 
-export default function DataErrorComponent({ props }) {
+// constants
+import Colors from '../constants/Colors';
+import Style from '../constants/Style';
+import Layout from '../constants/Layout';
 
+export default function DataErrorComponent({props, darkMode}) {
+  
+  const refetchHandler = () => {
+    props.refetch();
+  }
+  
   return (
-    <View style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}>
-      <MonoText style={{ fontSize: 40, alignSelf: "center"}}>Error...</MonoText>
+    <View style={[darkMode?Style.darkContainer:Style.lightContainer,{ flexDirection: "column", justifyContent: "center" }]}>
+      <MonoText style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ alignSelf: "center" }]}> We're having trouble retrieving what you asked.</MonoText>
+      <TouchableOpacity onPress={refetchHandler}>
+        <MonoText style={{ color: Colors.linkText, alignSelf: "center" }}>Try again</MonoText>
+      </TouchableOpacity>
     </View>
   );
 }
