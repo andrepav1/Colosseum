@@ -53,8 +53,8 @@ query($id: ID!) {
 `;
 
 const DISCOVER_MOVIE = gql`
-query {
-  discoverMovie {
+query($params: DiscoverMoviesParameters!) {
+  discoverMovie(params: $params) {
     id,
     title,
     overview,
@@ -212,6 +212,58 @@ query($id: ID!) {
 }
 `;
 
+const PERSON_MOVIE_CREDITS = gql`
+query($id: ID!) {
+  personMovieCredits(id: $id) {
+    cast {
+      id,
+      title,
+      overview,
+      character,
+      poster_path,
+      release_date,
+    }
+    crew {
+      id,
+      title,
+      overview,
+      job,
+      poster_path,
+      release_date,
+    }
+  }
+}
+`;
+
+const PERSON_IMAGES = gql`
+query($id: ID!) {
+  personImages(id: $id) {
+    file_path,
+  }
+}
+`;
+
+const ALL_QUERIES = {
+  MOVIE_POPULAR,
+  MOVIE_TOP_RATED,
+  MOVIE_NOW_PLAYING,
+  MOVIE_RECOMMENDATIONS,
+  DISCOVER_MOVIE,
+  MOVIE_INFO,
+  SEARCH_MOVIE,
+  MOVIE_VIDEOS,
+  MOVIE_IMAGES,
+  MOVIE_POSTER_IMAGES,
+  MOVIE_BACKDROP_IMAGES,
+  MOVIE_SIMILAR,
+  MOVIE_KEYWORDS,
+  MOVIE_CREDITS,
+  MOVIE_CAST,
+  PERSON_INFO,
+  PERSON_MOVIE_CREDITS,
+  PERSON_IMAGES
+}
+
 export {
   MOVIE_POPULAR,
   MOVIE_TOP_RATED,
@@ -228,5 +280,8 @@ export {
   MOVIE_KEYWORDS,
   MOVIE_CREDITS,
   MOVIE_CAST,
-  PERSON_INFO
-};
+  PERSON_INFO,
+  PERSON_MOVIE_CREDITS,
+  PERSON_IMAGES,
+  ALL_QUERIES
+}

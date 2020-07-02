@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View, Image } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import YoutubePlayer from 'react-native-youtube-iframe';
@@ -11,7 +11,8 @@ import DataLoadingComponent from '../components/DataLoadingComponent';
 import DataErrorComponent from '../components/DataErrorComponent';
 import MoviesPosterScrollView from '../components/MoviesPosterScrollView';
 import MoviesCastScrollView from '../components/MoviesCastScrollView';
-import MoviesImagesCarousel from '../components/MoviesImagesCarousel';
+import MoviesBackdropImagesCarousel from '../components/MoviesBackdropImagesCarousel';
+import MovieVideosCarousel from '../components/MovieVideosCarousel';
 
 // constants
 import Colors from '../constants/Colors';
@@ -104,6 +105,13 @@ function MovieScreen({ navigation, route, darkMode }) {
   // console.log(movieKeywords);
   // console.log(cast);
   
+  const getReleaseDate = () => movieInfo.release_date?" (" + movieInfo.release_date.substring(0,4) + ")":"";
+  const getTagline = () => movieInfo.tagline?(<MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ marginBottom: 8 }]}>{movieInfo.tagline}</MonoTextBold>):null;
+  
+  const genrePressedHandler = (genre) => {
+    navigation.navigate("MultipleMoviesScreen", { query: "DISCOVER_MOVIE", variables: { with_genres: genre.id, page: Math.round(Math.random()*1000) }});
+  }
+  
   // =================================================================
   // SCREEN RENDERING
   
@@ -126,17 +134,19 @@ function MovieScreen({ navigation, route, darkMode }) {
         </View>
         
         <View style={{ width: width-20, marginLeft: 10, flexDirection: "column", marginBottom: 16 }}>
-          <MonoTextBold style={[darkMode?Style.largeLightText:Style.largeDarkText,{ marginBottom: 4 }]}>{movieInfo.title} ({movieInfo.release_date.substring(0,4)})</MonoTextBold>
-          <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ marginBottom: 8 }]}>{movieInfo.tagline}</MonoTextBold>
+          <MonoTextBold style={[darkMode?Style.largeLightText:Style.largeDarkText,{ marginBottom: 2 }]}>{movieInfo.title + getReleaseDate()}</MonoTextBold>
+          {getTagline()}
           <MonoText style={darkMode?Style.smallLightText:Style.smallDarkText}>{movieInfo.overview}</MonoText>
         </View>
 
-        <View style={{ width: width-20, marginLeft: 2, flexDirection: "row", flexWrap:'wrap', marginBottom: 8 }}>
+        <View style={{ width: width-20, marginLeft: 2, flexDirection: "row", flexWrap: 'wrap', marginBottom: 8 }}>
           {
             movieInfo.genres.map(item => (
-              <View key={uuid()} style={{ backgroundColor: "#88888822", borderRadius: 16, marginBottom: 6, marginHorizontal: 6, paddingVertical: 6, paddingHorizontal: 8, }}>
-                <MonoTextBold style={darkMode?Style.mediumLightText:Style.mediumDarkText}>{item.name}</MonoTextBold>
-              </View>
+              <TouchableWithoutFeedback key={uuid()} onPress={() => genrePressedHandler(item)}>
+                <View style={{ backgroundColor: "#88888822", borderRadius: 16, marginBottom: 6, marginHorizontal: 6, paddingVertical: 6, paddingHorizontal: 8, }}>
+                  <MonoTextBold style={darkMode?Style.mediumLightText:Style.mediumDarkText}>{item.name}</MonoTextBold>
+                </View>
+              </TouchableWithoutFeedback>
             ))
           }
         </View>
@@ -145,9 +155,11 @@ function MovieScreen({ navigation, route, darkMode }) {
 
         <MoviesCastScrollView cast={cast} darkMode={darkMode} nav={navigation} />
         
-        <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginVertical: 12 }]} />
+        <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginBottom: 12, marginTop: 6 }]} />
 
-        <MoviesImagesCarousel images={backdrops} nav={navigation} darkMode={darkMode} />
+        <MoviesBackdropImagesCarousel images={backdrops} nav={navigation} darkMode={darkMode} />
+
+        <MovieVideosCarousel videos={movieVideos} nav={navigation} darkMode={darkMode} />
 
         <View style={{ width: width-20, marginLeft: 10, flexDirection: "column", marginBottom: 8 }}>
           <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ marginBottom: 8 }]}>Details</MonoTextBold>

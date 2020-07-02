@@ -34,7 +34,8 @@ export default function MoviesScrollView({movies, nav, darkMode}) {
 const styles = StyleSheet.create({
   moviesContainer: {
     flex: 1, 
-    height: 165, 
-    marginVertical: 8,
+    height: 136,
+    paddingVertical: 4,
+    marginVertical: 6,
   }
 });

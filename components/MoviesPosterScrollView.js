@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   moviesContainer: {
     flex: 1, 
     flexDirection: "column", 
-    height: 190, 
-    marginVertical: 8,
+    height: 200, 
+    marginVertical: 4,
   }
 });

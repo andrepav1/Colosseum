@@ -11,7 +11,7 @@ const { width, height } = Layout.window;
 
 const POSTER_PATH = 'https://image.tmdb.org/t/p/w780/';
 
-export default function MovieCard({props, nav, setLoaded}) {
+export default function MovieCarouselCard({props, nav, setLoaded}) {
   // console.log(props)
 
   const onPressHandler = () => {
