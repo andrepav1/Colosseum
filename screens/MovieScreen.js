@@ -109,7 +109,11 @@ function MovieScreen({ navigation, route, darkMode }) {
   const getTagline = () => movieInfo.tagline?(<MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ marginBottom: 8 }]}>{movieInfo.tagline}</MonoTextBold>):null;
   
   const genrePressedHandler = (genre) => {
-    navigation.navigate("MultipleMoviesScreen", { query: "DISCOVER_MOVIE", variables: { with_genres: genre.id, page: Math.round(Math.random()*1000) }});
+    navigation.navigate("MultipleMoviesScreen", { query: "DISCOVER_MOVIE", variables: { with_genres: genre.id, page: 1 }});
+  }
+  
+  const keywordPressedHandler = (keyword) => {
+    navigation.navigate("MultipleMoviesScreen", { query: "DISCOVER_MOVIE", variables: { with_keywords: keyword.id, page: 1 }});
   }
   
   // =================================================================
@@ -151,11 +155,11 @@ function MovieScreen({ navigation, route, darkMode }) {
           }
         </View>
 
-        <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginBottom: 8 }]} />
+        <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginBottom: 12 }]} />
 
         <MoviesCastScrollView cast={cast} darkMode={darkMode} nav={navigation} />
         
-        <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginBottom: 12, marginTop: 6 }]} />
+        <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginBottom: 12, marginTop: 8 }]} />
 
         <MoviesBackdropImagesCarousel images={backdrops} nav={navigation} darkMode={darkMode} />
 
@@ -192,9 +196,11 @@ function MovieScreen({ navigation, route, darkMode }) {
         <View style={{ width: width-20, marginLeft: 8, flexDirection: "row", flexWrap:'wrap', marginBottom: 8 }}>
           {
             movieKeywords.map(item => (
-              <View key={uuid()} style={{ backgroundColor: "#88888822", borderRadius: 16, margin: 2, paddingVertical: 2, paddingHorizontal: 4, }}>
-                <MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>{ "#" + item.name.replace(/ /g,"-" )}</MonoTextBold>
-              </View>
+              <TouchableWithoutFeedback key={uuid()} onPress={() => keywordPressedHandler(item)}>
+                <View key={uuid()} style={{ backgroundColor: "#88888822", borderRadius: 16, margin: 2, paddingVertical: 2, paddingHorizontal: 4, }}>
+                  <MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>{ "#" + item.name.replace(/ /g,"-" )}</MonoTextBold>
+                </View>
+              </TouchableWithoutFeedback>
             ))
           }
         </View>

@@ -7,6 +7,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import ExploreNavigator from './ExploreNavigator';
 import DiscoverNavigator from './DiscoverNavigator';
 import MyMoviesNavigator from './MyMoviesNavigator';
+import SearchNavigator from './MyMoviesNavigator';
 
 import SearchScreen from '../screens/SearchScreen';
 import MoreScreen from '../screens/MoreScreen';

@@ -18,12 +18,16 @@ const { width, height } = Layout.window;
 export default function MoviesCarousel({movies, nav, setLoaded }) {
   // console.log(movies)
 
+  const aspectRatio = 0.6;
+  const imageWidth = width*0.92;
+  const imageHeight = imageWidth*aspectRatio;
+
   const carouselRef = React.useRef();
   const[currIndex, setCurrIndex] = React.useState(0);
   const [loadingComplete, setLoadingComplete] = React.useState(false);
 
   return (
-    <View style={styles.moviesContainer}>
+    <View style={{ flex: 1, paddingBottom: 8, height: imageHeight }}>
       <Carousel
         ref={carouselRef}
         autoplay={true}
@@ -33,21 +37,13 @@ export default function MoviesCarousel({movies, nav, setLoaded }) {
         data={movies}
         renderItem={({item}) => <MovieCarouselCard props={item} nav={nav} setLoaded={setLoaded}/>}
         sliderWidth={width}
-        itemWidth={290}
+        itemWidth={imageWidth}
         inactiveSlideOpacity={0.2}
         onSnapToItem={setCurrIndex}
       />
-      <View style={{ position: "absolute", top: 184, alignSelf: "center" }}>
+      <View style={{ position: "absolute", top: imageHeight-4, alignSelf: "center" }}>
         <CarouselProgressIndicator current={currIndex} total={movies.length} />
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  moviesContainer: {
-    flex: 1, 
-    height: 190,
-    paddingBottom: 10,
-  }
-});

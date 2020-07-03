@@ -24,7 +24,7 @@ export default function MovieCarouselCard({props, nav, setLoaded}) {
   }
 
   return (
-    <View style={{ width: 300 }}>
+    <View style={{ width: width*0.92 }}>
       <TouchableWithoutFeedback onPress={onPressHandler}>
         <Image source={{ uri: POSTER_PATH + props.backdrop_path}} style={{ resizeMode: "contain", width: "100%", height: "100%" }} onLoadStart={onLoadEndHandler}/>
       </TouchableWithoutFeedback>

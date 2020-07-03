@@ -55,12 +55,17 @@ query($id: ID!) {
 const DISCOVER_MOVIE = gql`
 query($params: DiscoverMoviesParameters!) {
   discoverMovie(params: $params) {
-    id,
-    title,
-    overview,
-    poster_path,
-    backdrop_path,
-    genre_ids
+    page,
+    total_pages,
+    total_results,
+    results {
+      id,
+      title,
+      overview,
+      poster_path,
+      backdrop_path,
+      genre_ids
+    }
   }
 }
 `;
@@ -98,13 +103,19 @@ query($id: ID!) {
 `;
 
 const SEARCH_MOVIE = gql`
-query($name: ID!) {
-  searchMovie(name: $name) {
-    id,
-    title,
-    overview,
-    poster_path,
-    genre_ids
+query($params: SearchMovieParameters!) {
+  searchMovie(params: $params) {
+    page,
+    total_pages,
+    total_results,
+    results {
+      id,
+      title,
+      overview,
+      poster_path,
+      backdrop_path,
+      genre_ids
+    }
   }
 }
 `;

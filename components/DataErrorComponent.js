@@ -16,7 +16,7 @@ export default function DataErrorComponent({props, darkMode}) {
   
   return (
     <View style={[darkMode?Style.darkContainer:Style.lightContainer,{ flexDirection: "column", justifyContent: "center" }]}>
-      <MonoText style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ alignSelf: "center" }]}> We're having trouble retrieving what you asked.</MonoText>
+      <MonoText style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ alignSelf: "center", paddingHorizontal: 40, textAlign: "center", marginBottom: 8 }]}> We're having trouble retrieving what you asked.</MonoText>
       <TouchableOpacity onPress={refetchHandler}>
         <MonoText style={{ color: Colors.linkText, alignSelf: "center" }}>Try again</MonoText>
       </TouchableOpacity>

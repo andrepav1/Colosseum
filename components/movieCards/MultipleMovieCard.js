@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
 import { MonoText, MonoTextBold } from '../StyledText'
 
@@ -15,7 +15,7 @@ export default function MultipleMovieCard({props, nav, darkMode, filler}) {
   // console.log(props)
 
   const aspectRatio = 1.5;
-  const imageWidth = width*0.32;
+  const imageWidth = width*0.49;
   const imageHeight = imageWidth*aspectRatio;
 
   // last element of flatlist 
@@ -26,10 +26,13 @@ export default function MultipleMovieCard({props, nav, darkMode, filler}) {
   }
 
   return (
-    <View style={{ height: imageHeight, width: imageWidth, margin: 2 }}>
-      <TouchableOpacity onPress={onPressHandler}>
-        <Image source={{ uri: POSTER_PATH + props.poster_path}} style={{ resizeMode: "cover", width: "100%", height: "100%" }}/>
-      </TouchableOpacity>
+    <View style={{ padding: 1 }}>
+      <View style={{ height: imageHeight, width: imageWidth, overflow: "hidden" }}>
+        <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ position: "absolute", top: imageHeight-80, textAlign: "center", alignSelf: "center", padding: 16 }]}>{props.title}</MonoTextBold>
+        <TouchableWithoutFeedback onPress={onPressHandler}>
+          <Image source={{ uri: POSTER_PATH + props.poster_path}} style={{ resizeMode: "cover", width: "100%", height: "100%", backgroundColor: "#88888844" }}/>
+        </TouchableWithoutFeedback>
+      </View>
     </View>
   );
 }

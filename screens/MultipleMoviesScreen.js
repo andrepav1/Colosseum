@@ -7,6 +7,7 @@ import uuid from 'uuid-random';
 import { MonoText, MonoTextBold } from '../components/StyledText';
 import DataLoadingComponent from '../components/DataLoadingComponent';
 import DataErrorComponent from '../components/DataErrorComponent';
+import MultipleMoviesFooter from '../components/MultipleMoviesFooter';
 import MultipleMovieCard from '../components/movieCards/MultipleMovieCard';
 
 // constants
@@ -28,7 +29,6 @@ function MultipleMoviesScreen({ navigation, route, darkMode }) {
   
   // =================================================================
   // React Hooks
-
   
   // =================================================================
   // useQuery Hooks
@@ -49,8 +49,6 @@ function MultipleMoviesScreen({ navigation, route, darkMode }) {
   // =================================================================
   // DESTRUCTURING RESPONSE OBJECTS
   const movies = moviesResponse.data[Object.keys(moviesResponse.data)[0]];
-
-  // console.log(movies)
   
   const getReleaseDate = () => movieInfo.release_date?" (" + movieInfo.release_date.substring(0,4) + ")":"";
   
@@ -60,10 +58,10 @@ function MultipleMoviesScreen({ navigation, route, darkMode }) {
   return (
     <View style={darkMode?Style.darkContainer:Style.lightContainer}>
       <FlatList
-        style={[darkMode?Style.darkContainer:Style.lightContainer,{ flex: 1 }]}
-        contentContainerStyle={{ alignItems: "center", justifyContent: "center" }}
-        numColumns={3}
-        data={[...movies, { filler: true }]}
+        contentContainerStyle={{ alignItems: "center" }}
+        numColumns={2}
+        ListFooterComponent={<MultipleMoviesFooter page={movies.page} total_pages={movies.total_pages} total_results={movies.total_results} variables={route.params.variables} refetch={moviesResponse.refetch} darkMode={darkMode} />}
+        data={movies.results}
         keyExtractor={(movies) => movies.id}
         renderItem={({item}) => <MultipleMovieCard props={item} nav={navigation} darkMode={darkMode} />}
       />

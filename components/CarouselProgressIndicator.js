@@ -13,7 +13,7 @@ const { width, height } = Layout.window;
 export default function CarouselProgressIndicator({ current, total }) {
 
   return (
-    <View style={{ width: width - 20, height: 2, flexDirection: "row", justifyContent: "center", alignSelf: "center" }}>
+    <View style={{ width: width * 0.94, height: 2, flexDirection: "row", justifyContent: "center", alignSelf: "center" }}>
     {
       (() => {
         let view = [];

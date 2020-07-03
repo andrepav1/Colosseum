@@ -30,10 +30,10 @@ export default function MoviesCastScrollView({sectionName, cast, darkMode, nav})
         </View>
       </View>
 
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={ { paddingHorizontal: 6, marginTop: 6, }}>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={ { paddingHorizontal: 0, marginTop: 4, }}>
       {
         cast.map(cast => (
-          <View key={uuid()} style={{ paddingHorizontal: 4 }}>
+          <View key={uuid()} style={{ paddingHorizontal: 0 }}>
             <MovieCastCard props={cast} nav={nav} darkMode={darkMode} />
           </View>
         ))

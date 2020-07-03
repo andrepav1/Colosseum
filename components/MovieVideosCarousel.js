@@ -17,7 +17,7 @@ const { width, height } = Layout.window;
 
 export default function MovieVideosCarousel({videos, nav, darkMode }) {
 
-  if(videos.length == 0) return null;
+  if(videos.length < 2) return null;
 
   const aspectRatio = 0.57;
   const playerWidth = width*0.95;
