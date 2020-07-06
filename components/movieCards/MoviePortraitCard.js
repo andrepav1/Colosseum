@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
 
 import { MonoText, MonoTextBold } from '../StyledText'
 
@@ -19,9 +19,14 @@ export default function MoviePortraitCard({props, nav, darkMode}) {
 
   return (
     <View style={[darkMode?Style.darkCardContainer:Style.lightCardContainer,{ height: 164, width: 110, borderRadius: 1 }]}>
-      <TouchableOpacity onPress={onPressHandler}>
-        <Image source={{ uri: POSTER_PATH + props.poster_path}} borderRadius={1} style={{ resizeMode: "cover", width: "100%", height: "100%" }}/>
-      </TouchableOpacity>
+      <TouchableWithoutFeedback onPress={onPressHandler}>
+        <View>
+          <View style={{ overflow: "hidden", height: "100%", width: "100%", position: "absolute", justifyContent: "flex-end" }}>
+            <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ alignSelf: "center", textAlign: "center", width: "90%", opacity: 0.8, paddingBottom: 8  }]}>{props.title}</MonoTextBold>
+          </View>
+          <Image source={{ uri: POSTER_PATH + props.poster_path}} borderRadius={1} style={{ resizeMode: "cover", width: "100%", height: "100%", backgroundColor: "#44444444" }}/>
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 }

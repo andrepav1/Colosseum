@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import uuid from 'uuid-random';
 
 // app components
-import PersonMoviesCastCard from './movieCards/PersonMoviesCastCard';
+import PersonMovieCastCard from './movieCards/PersonMovieCastCard';
 import { MonoText, MonoTextBold } from './StyledText';
 
 // constants
@@ -19,9 +19,9 @@ export default function PersonMoviesCastScrollView({sectionName, movies, darkMod
 
   return (
     <View style={styles.moviesContainer}>
-      <View style={{ flexDirection: "row", }}>
+      <View style={{ flexDirection: "row", paddingLeft: 16, marginVertical: 4 }}>
         <View style={{ width: "70%" }}>
-          <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ textAlign: "left", paddingLeft: 16, marginTop: 2 }]}>Actor Credits</MonoTextBold>
+          <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ textAlign: "left" }]}>Movies</MonoTextBold>
         </View>
         <View style={{ width: "30%" }}>
           {/* <TouchableOpacity onPress={() => {}}>
@@ -30,11 +30,20 @@ export default function PersonMoviesCastScrollView({sectionName, movies, darkMod
         </View>
       </View>
 
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={ { paddingHorizontal: 10, marginTop: 4 }}>
+      <ScrollView 
+        horizontal={true} 
+        showsHorizontalScrollIndicator={false} 
+        contentContainerStyle={{
+          flexDirection: "column",
+          flexWrap: "wrap",
+          justifyContent: "flex-start",
+          paddingHorizontal: 10
+        }}
+        >
       {
         movies.map(movie => (
-          <View key={uuid()} style={{ paddingHorizontal: 4 }}>
-            <PersonMoviesCastCard props={movie} nav={nav} darkMode={darkMode} />
+          <View key={uuid()} style={{ paddingVertical: 2, paddingHorizontal: 4 }}>
+            <PersonMovieCastCard props={movie} nav={nav} darkMode={darkMode} />
           </View>
         ))
       }
@@ -49,7 +58,6 @@ const styles = StyleSheet.create({
   moviesContainer: {
     flex: 1, 
     flexDirection: "column", 
-    height: 100, 
-    marginVertical: 8,
+    height: 330, 
   }
 });

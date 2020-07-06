@@ -78,7 +78,6 @@ function DiscoverScreen({ navigation, darkMode }) {
   // DESTRUCTURING RESPONSE OBJECTS
   const { data: { moviePopular }} = popularMoviesResponse;
 
-
   // =================================================================
   // SCREEN RENDERING
 
@@ -95,13 +94,12 @@ function DiscoverScreen({ navigation, darkMode }) {
           }}
           disableTopSwipe={true}
           cards={moviePopular}
-          renderCard={card => <MovieDeckCard props={card} deckSwiper={this} darkMode={darkMode} />}
+          renderCard={card => <MovieDeckCard props={card} darkMode={darkMode} nav={navigation} />}
           onSwipedAll={() => {setDeckEmpty(true)}}
           onSwipedLeft={onSwipeLeftHandler}
           onSwipedRight={onSwipeRightHandler}
           onSwipedBottom={onSwipeBottomHandler}
           stackSize={5}
-          style={{ position: "absolute", top: 20}}
         />
         {
           deckEmpty &&

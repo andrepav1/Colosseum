@@ -15,7 +15,7 @@ import {Provider} from 'react-redux';
 import store from './store';
 
 const gqluri = `http://${Constants.manifest.debuggerHost.split(':').shift()}:4000/graphql`;
-// const gqluri = `http://94.10.3.194:4000/graphql`;
+// const gqluri = `http://5.69.246.84:4000/graphql`;
 
 const client = new ApolloClient({
   uri: gqluri 

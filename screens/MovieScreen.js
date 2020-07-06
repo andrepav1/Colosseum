@@ -32,7 +32,7 @@ import {
   MOVIE_CAST
 } from '../gqlQueries'
 
-const POSTER_PATH = 'http://image.tmdb.org/t/p/w780/';
+const IMAGE_PATH = 'http://image.tmdb.org/t/p/w780/';
 
 import {connect} from 'react-redux';
 
@@ -104,9 +104,13 @@ function MovieScreen({ navigation, route, darkMode }) {
   // console.log(movieImages);
   // console.log(movieKeywords);
   // console.log(cast);
+
+  // =================================================================
+  // Other functions
   
   const getReleaseDate = () => movieInfo.release_date?" (" + movieInfo.release_date.substring(0,4) + ")":"";
   const getTagline = () => movieInfo.tagline?(<MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ marginBottom: 8 }]}>{movieInfo.tagline}</MonoTextBold>):null;
+  const getOverview = () => movieInfo.overview?(<MonoText style={darkMode?Style.smallLightText:Style.smallDarkText}>{movieInfo.overview}</MonoText>):null;
   
   const genrePressedHandler = (genre) => {
     navigation.navigate("MultipleMoviesScreen", { query: "DISCOVER_MOVIE", variables: { with_genres: genre.id, page: 1 }});
@@ -115,6 +119,47 @@ function MovieScreen({ navigation, route, darkMode }) {
   const keywordPressedHandler = (keyword) => {
     navigation.navigate("MultipleMoviesScreen", { query: "DISCOVER_MOVIE", variables: { with_keywords: keyword.id, page: 1 }});
   }
+
+  const getYoutubePlayer = () => {
+    const { key } = getYoutubeMovieTrailer();
+    
+    if(key) {
+      return (
+        <View style={{ height: width*0.58, }}>
+          <YoutubePlayer
+            ref={playerRef}
+            height={"100%"}
+            width={width}
+            videoId={key}
+            play={false}
+            volume={0}
+            onChangeState={console.log}
+          />
+        </View>
+      );
+    }
+
+    if(backdrops.length > 0) {
+      return (
+        <Image source={{uri: IMAGE_PATH + backdrops[0].file_path}} style={{ width: width, height: width*0.56, resizeMode: "cover" }} />
+      );
+    }
+
+    return null;
+
+  }
+  
+  const getYoutubeMovieTrailer = () => {
+
+  const ytVideos = movieVideos.filter(movie => movie.site !== "youtube");
+  for (const ytVideo of ytVideos) {
+    if(ytVideo.type === "Trailer") {
+      return ytVideo;
+    }
+  }
+
+  return ytVideos.length == 0?{key: null}:ytVideos[0];
+}
   
   // =================================================================
   // SCREEN RENDERING
@@ -122,25 +167,13 @@ function MovieScreen({ navigation, route, darkMode }) {
   return (
     <View style={{ flex:1 }}>
       <ScrollView style={darkMode?Style.darkContainer:Style.lightContainer} contentContainerStyle={{ }}>
-        <View style={{ height: width*0.58, }}>
-        {
-          playing &&
-          <YoutubePlayer
-            ref={playerRef}
-            height={"100%"}
-            width={width}
-            videoId={getYoutubeMovieTrailer(movieVideos).key}
-            play={false}
-            volume={0}
-            onChangeState={console.log}
-          />
-        }
-        </View>
+
+        { getYoutubePlayer() }
         
-        <View style={{ width: width-20, marginLeft: 10, flexDirection: "column", marginBottom: 16 }}>
-          <MonoTextBold style={[darkMode?Style.largeLightText:Style.largeDarkText,{ marginBottom: 2 }]}>{movieInfo.title + getReleaseDate()}</MonoTextBold>
-          {getTagline()}
-          <MonoText style={darkMode?Style.smallLightText:Style.smallDarkText}>{movieInfo.overview}</MonoText>
+        <View style={{ width: width-20, marginLeft: 10, flexDirection: "column", marginBottom: 12 }}>
+          <MonoTextBold style={[darkMode?Style.largeLightText:Style.largeDarkText,{ marginBottom: 2, marginTop: 8 }]}>{movieInfo.title + getReleaseDate()}</MonoTextBold>
+          { getTagline() }
+          { getOverview() }
         </View>
 
         <View style={{ width: width-20, marginLeft: 2, flexDirection: "row", flexWrap: 'wrap', marginBottom: 8 }}>
@@ -155,11 +188,9 @@ function MovieScreen({ navigation, route, darkMode }) {
           }
         </View>
 
-        <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginBottom: 12 }]} />
-
+        { cast.length > 0 && <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginBottom: 12 }]} />}
         <MoviesCastScrollView cast={cast} darkMode={darkMode} nav={navigation} />
-        
-        <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginBottom: 12, marginTop: 8 }]} />
+        { cast.length > 0 && <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginBottom: 12, marginTop: 8 }]} />}
 
         <MoviesBackdropImagesCarousel images={backdrops} nav={navigation} darkMode={darkMode} />
 
@@ -167,30 +198,48 @@ function MovieScreen({ navigation, route, darkMode }) {
 
         <View style={{ width: width-20, marginLeft: 10, flexDirection: "column", marginBottom: 8 }}>
           <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ marginBottom: 8 }]}>Details</MonoTextBold>
-          <View style={{ flexDirection: "row", marginBottom: 4 }}>
-            <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Original Title:</MonoTextBold>
-            <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{movieInfo.original_title}</MonoText>
-          </View>
-          <View style={{ flexDirection: "row", marginBottom: 4 }}>
-            <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Original Language:</MonoTextBold>
-            <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{movieInfo.original_language}</MonoText>
-          </View>
-          <View style={{ flexDirection: "row", marginBottom: 4 }}>
-            <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Spoken Languages:</MonoTextBold>
-            <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{(movieInfo.spoken_languages.map(lang => lang.name + ", "))}</MonoText>
-          </View>
-          <View style={{ flexDirection: "row", marginBottom: 4 }}>
-            <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Production Companies:</MonoTextBold>
-            <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{movieInfo.production_companies.map(company => company.name + ", ")}</MonoText>
-          </View>
-          <View style={{ flexDirection: "row", marginBottom: 4 }}>
-            <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Production Countries:</MonoTextBold>
-            <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{movieInfo.production_countries.map(country => country.name + ", ")}</MonoText>
-          </View>
-          <View style={{ flexDirection: "row", marginBottom: 4 }}>
-            <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Runtime:</MonoTextBold>
-            <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>± {movieInfo.runtime} minutes</MonoText>
-          </View>
+          {
+            movieInfo.original_title &&
+            <View style={{ flexDirection: "row", marginBottom: 4 }}>
+              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Original Title:</MonoTextBold>
+              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{movieInfo.original_title}</MonoText>
+            </View>
+          }
+          {
+            movieInfo.original_language &&
+            <View style={{ flexDirection: "row", marginBottom: 4 }}>
+              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Original Language:</MonoTextBold>
+              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{movieInfo.original_language}</MonoText>
+            </View>
+          }
+          {
+            movieInfo.spoken_languages.length > 0 &&
+            <View style={{ flexDirection: "row", marginBottom: 4 }}>
+              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Spoken Languages:</MonoTextBold>
+              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{movieInfo.spoken_languages.map(lang => lang.name + ", ")}</MonoText>
+            </View>
+          }
+          {
+            movieInfo.production_companies.length > 0 &&
+            <View style={{ flexDirection: "row", marginBottom: 4 }}>
+              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Production Companies:</MonoTextBold>
+              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{movieInfo.production_companies.map(company => company.name + ", ")}</MonoText>
+            </View>
+          }
+          {
+            movieInfo.production_countries.length > 0 &&
+            <View style={{ flexDirection: "row", marginBottom: 4 }}>
+              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Production Countries:</MonoTextBold>
+              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{movieInfo.production_countries.map(country => country.name + ", ")}</MonoText>
+            </View>
+          }
+          {
+            movieInfo.runtime &&
+            <View style={{ flexDirection: "row", marginBottom: 4 }}>
+              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Runtime:</MonoTextBold>
+              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>± {movieInfo.runtime} minutes</MonoText>
+            </View>
+          }
         </View>
         
         <View style={{ width: width-20, marginLeft: 8, flexDirection: "row", flexWrap:'wrap', marginBottom: 8 }}>
@@ -205,25 +254,13 @@ function MovieScreen({ navigation, route, darkMode }) {
           }
         </View>
 
-        <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginVertical: 8 }]} />
+        { movieSimilar.length > 0 && <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginVertical: 8 }]} /> }
 
         <MoviesPosterScrollView sectionName={"Similar Movies"} movies={movieSimilar} darkMode={darkMode} nav={navigation} />
 
       </ScrollView>
     </View>
   );
-}
-
-const getYoutubeMovieTrailer = (videos) => {
-  if(videos.length == 0) return { key: null };
-
-  const ytVideos = videos.filter(movie => movie.site !== "youtube");
-  for (const ytVideo of ytVideos) {
-    if(ytVideo.type === "Trailer") {
-      return ytVideo;
-    }
-  }
-  return ytVideos[0];
 }
 
   // budget : Float

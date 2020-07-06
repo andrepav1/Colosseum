@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { CommonActions } from '@react-navigation/native';
-import { SearchBar } from 'react-native-elements';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import ExploreScreen from '../screens/ExploreScreen';
-import MovieScreen from '../screens/MovieScreen';
-import MultipleMoviesScreen from '../screens/MultipleMoviesScreen';
-import PersonScreen from '../screens/PersonScreen';
+// constants
+import Style from '../constants/Style'
+import Colors from '../constants/Colors'
+import Layout from '../constants/Layout'
+const { width, height } = Layout.window;
 
+import MovieSearchScreen from '../screens/MovieSearchScreen'
+import PeopleSearchScreen from '../screens/MovieSearchScreen'
+import TVShowSearchScreen from '../screens/MovieSearchScreen'
 
-import Color from '../constants/Colors'
+const Tab = createMaterialTopTabNavigator ();
 
-const Tab = createStackNavigator();
-const INITIAL_ROUTE_NAME = 'MultipleMoviesScreen';
+const INITIAL_ROUTE_NAME = 'MovieSearch';
 
 import {connect} from 'react-redux';
 
@@ -22,20 +23,35 @@ function SearchNavigator({ navigation, darkMode }) {
   return (
     <Tab.Navigator 
       initialRouteName={INITIAL_ROUTE_NAME}
+      tabBarOptions={{
+        labelStyle: darkMode?Style.smallLightText:Style.smallDarkText,
+        style: { 
+          backgroundColor: darkMode?Colors.darkHeaderColor:Colors.lightHeaderColor, 
+          paddingTop: 20,
+          shadowOpacity: 0.2,
+          shadowColor: darkMode?"#AAA":"#444", 
+        },
+      }}
     >
       <Tab.Screen
-        name="MultipleMoviesScreen"
-        component={MultipleMoviesScreen}
+        name="MovieSearch"
+        component={MovieSearchScreen}
         options={{
-          title: null,
-          headerShown: true, 
-          headerTitle: () => <View style={{ width: 300, }}><SearchBar style={{ width: 300, }} /></View>,
-          headerStyle: {
-            backgroundColor: darkMode?Color.darkHeaderColor:Color.lightHeaderColor,
-            elevation: darkMode?0:8, // remove shadow on Android
-            shadowOpacity: darkMode?0:0.2, // remove shadow on iOS
-            height: 100,
-          },
+          title: "Movies",
+        }}
+      />
+      <Tab.Screen
+        name="PeopleSearch"
+        component={PeopleSearchScreen}
+        options={{
+          title: "People",
+        }}
+      />
+      <Tab.Screen
+        name="TVShowSearch"
+        component={TVShowSearchScreen}
+        options={{
+          title: "TV Shows",
         }}
       />
     </Tab.Navigator>

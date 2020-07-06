@@ -13,13 +13,16 @@ const { width, height } = Layout.window;
 
 const POSTER_PATH = 'http://image.tmdb.org/t/p/w780/';
 
-export default function MovieDeckCard({props, deckSwiper, darkMode}) {
+export default function MovieDeckCard({props, darkMode, nav }) {
 
   const [card, setCard] = React.useState();
   const [genres, setGenres] = React.useState(assignNumbersArrayToGenre(props.genre_ids));
   
-  const onPressHandler = () => {
-    nav.navigate("MovieScreen", props);
+  const onSeeMorePressedHandler = () => {
+      nav.navigate('Explore', {
+      screen: 'MovieScreen',
+      params: props
+    });
   }
 
   return (
@@ -41,6 +44,12 @@ export default function MovieDeckCard({props, deckSwiper, darkMode}) {
               <MonoTextBold style={[ darkMode?Style.largeLightText:Style.largeDarkText, { textAlign: "center", maxWidth: "90%", marginBottom: 16, marginTop: 20 }]}>{props.title}</MonoTextBold>
               <MonoTextBold style={[ darkMode?Style.smallLightText:Style.smallDarkText, { textAlign: "center", maxWidth: "90%"}]}>{props.overview}</MonoTextBold>
             </View>
+            
+            <TouchableWithoutFeedback onPress={onSeeMorePressedHandler} >
+              <View style={{ width: 140, alignSelf: "center" }}>
+                <MonoTextBold style={[ darkMode?Style.mediumLightText:Style.mediumDarkText, { textAlign: "center", paddingVertical: 16, }]}>See More</MonoTextBold>
+              </View>
+            </TouchableWithoutFeedback> 
           </View>
         </TouchableWithoutFeedback>
       </CardFlip> 

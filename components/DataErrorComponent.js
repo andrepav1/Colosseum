@@ -10,6 +10,10 @@ import Layout from '../constants/Layout';
 
 export default function DataErrorComponent({props, darkMode}) {
   
+  React.useEffect(() => {
+    setTimeout(props.refetch, 500);
+  },[])
+
   const refetchHandler = () => {
     props.refetch();
   }

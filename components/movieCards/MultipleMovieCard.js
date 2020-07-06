@@ -28,7 +28,7 @@ export default function MultipleMovieCard({props, nav, darkMode, filler}) {
   return (
     <View style={{ padding: 1 }}>
       <View style={{ height: imageHeight, width: imageWidth, overflow: "hidden" }}>
-        <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ position: "absolute", top: imageHeight-80, textAlign: "center", alignSelf: "center", padding: 16 }]}>{props.title}</MonoTextBold>
+        <MonoTextBold numberOfLines={3} style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ position: "absolute", top: imageHeight-80, textAlign: "center", alignSelf: "center", padding: 16 }]}>{props.title}</MonoTextBold>
         <TouchableWithoutFeedback onPress={onPressHandler}>
           <Image source={{ uri: POSTER_PATH + props.poster_path}} style={{ resizeMode: "cover", width: "100%", height: "100%", backgroundColor: "#88888844" }}/>
         </TouchableWithoutFeedback>

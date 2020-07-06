@@ -13,13 +13,15 @@ import Style from '../constants/Style';
 import Layout from '../constants/Layout';
 
 export default function MoviesScrollView({movies, nav, darkMode}) {
+  
   // console.log(movies)
+
   return (
-    <View style={styles.moviesContainer}>
+    <View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={ { paddingHorizontal: 10 }}>
       {
         movies.map(movie => (
-          <View key={uuid()} style={{ paddingHorizontal: 4 }}>
+          <View key={uuid()} style={{ paddingHorizontal: 4, paddingVertical: 8 }}>
             <MovieLandscapeCard key={uuid()} props={movie} nav={nav} darkMode={darkMode}/>
           </View>
         ))
@@ -29,13 +31,3 @@ export default function MoviesScrollView({movies, nav, darkMode}) {
     </View>
   );
 }
-
-
-const styles = StyleSheet.create({
-  moviesContainer: {
-    flex: 1, 
-    height: 136,
-    paddingVertical: 4,
-    marginVertical: 6,
-  }
-});

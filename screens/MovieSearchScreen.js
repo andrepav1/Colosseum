@@ -5,18 +5,28 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 // app components
 import { MonoText, MonoTextBold } from '../components/StyledText';
+import FiltersView from '../components/FiltersView';
 
 // constants
 import Style from '../constants/Style'
-import Color from '../constants/Colors'
+import Colors from '../constants/Colors'
 import Layout from '../constants/Layout'
 const { width, height } = Layout.window;
 
 import {connect} from 'react-redux';
 
-function SearchScreen({ navigation, darkMode }) {
+function MovieSearchScreen({ navigation, darkMode }) {
+
+  const filters = [
+    { name: "Country", options: [{name: "Kenya"},{name: "Italy"},{name: "USA"}, {name: "Canada"}, {name: "Moon"}, {name: "Finland"}] },
+    { name: "Year", options: [{ name: 1995 }, { name: 1996 }, { name: 1997 }, { name: 1998 }, { name: 1999 }, { name: 2000 }, { name: 2001 }, { name: 2002 }, { name: 2003 }, { name: 2004 }, { name: 2005 },] },
+    { name: "Language", options: [{name: "English"},{name: "Korean"},{name: "Spanish"},{name: "French"},{name: "Italian"},{name: "Russian"},{name: "Japanese"}] },
+  ];
 
   const onSearchHandler = ({nativeEvent:{text}}) => {
+    
+    console.log("search");
+    
     navigation.navigate('Explore', {
       screen: 'MultipleMoviesScreen',
       params: { query: "SEARCH_MOVIE", variables: { query: text, page: 1 }}
@@ -24,22 +34,19 @@ function SearchScreen({ navigation, darkMode }) {
   }
 
   return (
-    <View style={darkMode?Style.darkContainer:Style.lightContainer}>
+    <View style={[darkMode?Style.darkContainer:Style.lightContainer,{ backgroundColor: darkMode?Colors.darkHeaderColor:Colors.lightHeaderColor }]}>
       <SearchHeader
         style = {{
+          container: {
+            backgroundColor: darkMode?Colors.darkHeaderColor:Colors.lightHeaderColor
+          },
           header: {
-            width: width*0.94,
+            width: width*0.92,
             alignSelf: "center",
             borderRadius: 4,
             height: 44,
-            backgroundColor: darkMode?'#44444444':'#FFF',
-            marginTop: 4,
-            marginBottom: 2
-          },
-          suggestion: {
-            fontFamily: "montserrat-regular",
-            fontSize: 14,
-            backgroundColor: darkMode?'#020202CF':'#FFF',
+            backgroundColor: darkMode?'#44444466':'#88888822',
+            marginBottom: 8
           },
           input: darkMode?Style.mediumLightText:Style.mediumDarkText,
           suggestionEntry: {
@@ -47,14 +54,18 @@ function SearchScreen({ navigation, darkMode }) {
             paddingVertical: 8,
           },
         }}
-        suggestionHistoryEntryRollOverCount={4}
+        FilterView={() => <FiltersView filters={filters} nav={navigation} darkMode={darkMode} />}
+        suggestionHistoryEntryRollOverCount={3}
         persistent={true}
         autoFocus={true}
         visibleInitially={true}
         placeholder = 'Search...'
         placeholderColor={"grey"}
+        darkMode={darkMode}
         onSearch={onSearchHandler}
         onGetAutocompletions = {async (text) => {
+          console.log("autocomplete");
+          
           if (text) {
             const response = await fetch('https://api.themoviedb.org/3/search/movie?api_key=c781a3dabef946805a961db3b7b916eb&query=' + text, {
               method: 'GET'
@@ -86,26 +97,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen)
-
-const styles = StyleSheet.create({
-  label: {
-    flexGrow: 1,
-    fontSize: 20,
-    fontWeight: `600`,
-    textAlign: `left`,
-    marginVertical: 8,
-    paddingVertical: 3,
-    color: `#f5fcff`,
-    backgroundColor: `transparent`
-  },
-  button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 130,
-    height: 40,
-    marginTop: 40,
-    borderRadius: 2,
-    backgroundColor: `#ff5722`
-  }
-});
+export default connect(mapStateToProps, mapDispatchToProps)(MovieSearchScreen)

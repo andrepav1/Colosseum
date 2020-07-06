@@ -76,13 +76,13 @@ function ExploreScreen({ navigation, route, darkMode }) {
 
   // =================================================================
   // Rendering loading component when data is loading 
-  for(const index of Object.keys(responses)) { if (responses[index].loading) return <DataLoadingComponent /> };
+  for(const index of Object.keys(responses)) { if (responses[index].loading) return <DataLoadingComponent darkMode={darkMode} /> };
   // =================================================================
   // Rendering loading component when data is refetching 
-  for(const index of Object.keys(responses)) { if (responses[index].networkStatus == 4) return <DataLoadingComponent /> };
+  for(const index of Object.keys(responses)) { if (responses[index].networkStatus == 4) return <DataLoadingComponent darkMode={darkMode} /> };
   // =================================================================
   // Rendering error component if at least one error occurs 
-  for(const index of Object.keys(responses)) { if (responses[index].error) return <DataErrorComponent props={responses[index]} /> };
+  for(const index of Object.keys(responses)) { if (responses[index].error) return <DataErrorComponent props={responses[index]} darkMode={darkMode} /> };
   // =================================================================
   // DESTRUCTURING RESPONSE OBJECTS
   const { data: { moviePopular }} = responses.popularMoviesResponse;
