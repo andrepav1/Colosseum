@@ -15,21 +15,23 @@ const { width, height } = Layout.window;
 
 import {connect} from 'react-redux';
 
-function MovieSearchScreen({ navigation, darkMode }) {
+function SearchScreen({ navigation, darkMode }) {
 
-  const filters = [
-    { name: "Country", options: [{name: "Kenya"},{name: "Italy"},{name: "USA"}, {name: "Canada"}, {name: "Moon"}, {name: "Finland"}] },
-    { name: "Year", options: [{ name: 1995 }, { name: 1996 }, { name: 1997 }, { name: 1998 }, { name: 1999 }, { name: 2000 }, { name: 2001 }, { name: 2002 }, { name: 2003 }, { name: 2004 }, { name: 2005 },] },
-    { name: "Language", options: [{name: "English"},{name: "Korean"},{name: "Spanish"},{name: "French"},{name: "Italian"},{name: "Russian"},{name: "Japanese"}] },
-  ];
+ const filters = [];
+  const onSuggestionPressedHandler = ({ nativeEvent }) => {
+    switch (nativeEvent.type) {
+      case "history": return;
+      case "tv": return navigation.navigate('Explore', { screen: 'TVShowScreen', params: { id: nativeEvent.id }});
+      case "movie": return navigation.navigate('Explore', { screen: 'MovieScreen', params: { id: nativeEvent.id }});
+      case "person": return navigation.navigate('Explore', { screen: 'PersonScreen', params: { id: nativeEvent.id }});
+    }
+    
+  }
 
   const onSearchHandler = ({nativeEvent:{text}}) => {
-    
-    console.log("search");
-    
     navigation.navigate('Explore', {
       screen: 'MultipleMoviesScreen',
-      params: { query: "SEARCH_MOVIE", variables: { query: text, page: 1 }}
+      params: { query: "SEARCH_MOVIE", variables: { query: text, page: 1 }, titleQuery: text }
     });
   }
 
@@ -44,9 +46,10 @@ function MovieSearchScreen({ navigation, darkMode }) {
             width: width*0.92,
             alignSelf: "center",
             borderRadius: 4,
-            height: 44,
+            height: 40,
             backgroundColor: darkMode?'#44444466':'#88888822',
-            marginBottom: 8
+            marginTop: 8,
+            marginBottom: 8,
           },
           input: darkMode?Style.mediumLightText:Style.mediumDarkText,
           suggestionEntry: {
@@ -63,15 +66,22 @@ function MovieSearchScreen({ navigation, darkMode }) {
         placeholderColor={"grey"}
         darkMode={darkMode}
         onSearch={onSearchHandler}
+        onSuggestionPressed={onSuggestionPressedHandler}
         onGetAutocompletions = {async (text) => {
-          console.log("autocomplete");
           
           if (text) {
-            const response = await fetch('https://api.themoviedb.org/3/search/movie?api_key=c781a3dabef946805a961db3b7b916eb&query=' + text, {
+            const response = await fetch('https://api.themoviedb.org/3/search/multi?api_key=c781a3dabef946805a961db3b7b916eb&query=' + text, {
               method: 'GET'
             });
             const data = await response.json();
-            return data.results.map(item => item.title);
+            
+            return data.results.map(({ name, title, media_type, id, release_date, first_air_date }) => {
+              switch (media_type) {
+                case "tv": return { name: name + " (" + first_air_date.substring(0,4) + ")", media_type, id }
+                case "person": return { name, media_type, id }
+                case "movie": return { name: title + " (" + release_date.substring(0,4) + ")", media_type, id }
+              }
+            });
           } else {
             return [];
           }
@@ -97,4 +107,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MovieSearchScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(SearchScreen)

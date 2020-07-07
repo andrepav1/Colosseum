@@ -113,11 +113,11 @@ function MovieScreen({ navigation, route, darkMode }) {
   const getOverview = () => movieInfo.overview?(<MonoText style={darkMode?Style.smallLightText:Style.smallDarkText}>{movieInfo.overview}</MonoText>):null;
   
   const genrePressedHandler = (genre) => {
-    navigation.navigate("MultipleMoviesScreen", { query: "DISCOVER_MOVIE", variables: { with_genres: genre.id, page: 1 }});
+    navigation.navigate("MultipleMoviesScreen", { query: "DISCOVER_MOVIE", variables: { with_genres: genre.id, page: 1 }, titleQuery: genre.name });
   }
   
   const keywordPressedHandler = (keyword) => {
-    navigation.navigate("MultipleMoviesScreen", { query: "DISCOVER_MOVIE", variables: { with_keywords: keyword.id, page: 1 }});
+    navigation.navigate("MultipleMoviesScreen", { query: "DISCOVER_MOVIE", variables: { with_keywords: keyword.id, page: 1 }, titleQuery: keyword.name });
   }
 
   const getYoutubePlayer = () => {

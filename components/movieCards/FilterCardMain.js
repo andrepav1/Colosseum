@@ -11,7 +11,7 @@ import Layout from '../../constants/Layout';
 const PROFILE_PATH = 'https://image.tmdb.org/t/p/w185/';
 
 export default function FilterCardMain({props, nav, darkMode, selectFilter, selected}) {
-
+  
   const onPressHandler = () => {
     selectFilter(props.name);
   }
@@ -20,7 +20,7 @@ export default function FilterCardMain({props, nav, darkMode, selectFilter, sele
     <TouchableOpacity onPress={onPressHandler}>
       <View style={[darkMode?styles.darkCardContainer:Style.lightCardContainer,{ paddingVertical: 8, paddingHorizontal: 10, borderRadius: 4, opacity:selected?0.4:1 }]}>
         <View style={{ flex: 1, flexDirection: "column", justifyContent: "center", alignSelf: "center" }}>
-          <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ }]}>{props.name}</MonoTextBold>
+          <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ }]}>{props.english_name}</MonoTextBold>
         </View>
       </View>
     </TouchableOpacity>

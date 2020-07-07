@@ -7,8 +7,8 @@ import TabBarIcon from '../components/TabBarIcon';
 import ExploreNavigator from './ExploreNavigator';
 import DiscoverNavigator from './DiscoverNavigator';
 import MyMoviesNavigator from './MyMoviesNavigator';
-import SearchNavigator from './SearchNavigator';
 
+import SearchScreen from '../screens/SearchScreen';
 import MoreScreen from '../screens/MoreScreen';
 
 import Color from '../constants/Colors'
@@ -40,7 +40,7 @@ function BottomTabNavigator({ navigation, darkMode }) {
       />
       <Tab.Screen
         name="Search"
-        component={SearchNavigator}
+        component={SearchScreen}
         options={{
           title: 'Search',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-search" iconFamily="Ionicons" darkMode={darkMode} />,

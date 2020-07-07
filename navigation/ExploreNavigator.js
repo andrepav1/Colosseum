@@ -58,6 +58,10 @@ function ExploreNavigator({ navigation, darkMode }) {
             elevation: darkMode?0:8, // remove shadow on Android
             shadowOpacity: darkMode?0:0.2, // remove shadow on iOS
           },
+          headerTitleStyle: {
+            fontSize: 16,
+            fontFamily: 'montserrat-semi-bold',
+          },
         }}
       />
       <Tab.Screen

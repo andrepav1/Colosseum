@@ -30,6 +30,8 @@ function MultipleMoviesScreen({ navigation, route, darkMode }) {
   // =================================================================
   // React Hooks
   
+  React.useEffect(() => navigation.setOptions({ title: "Results for " + route.params.titleQuery }));
+
   // =================================================================
   // useQuery Hooks
   const moviesResponse = useQuery(GQL_QUERIES[route.params.query], { variables: { params: route.params.variables } });

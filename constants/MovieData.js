@@ -2037,6 +2037,7 @@ const assignNumbersArrayToCountry = (arr) => {
   return arr.map((countryId) => countries.get(countryId));
 }
 
+const years = Array.from(Array(155).keys()).map(x => x + 1874);
 
 export {
   genres,
@@ -2047,5 +2048,6 @@ export {
   assignNumbersArrayToLanguage,
   countries,
   countriesObjectArray, 
-  assignNumbersArrayToCountry
+  assignNumbersArrayToCountry,
+  years
 };
