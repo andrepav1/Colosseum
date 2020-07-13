@@ -27,7 +27,7 @@ export default function MoviesCarousel({movies, nav, setLoaded }) {
   const [loadingComplete, setLoadingComplete] = React.useState(false);
 
   return (
-    <View style={{ flex: 1, paddingBottom: 8, height: imageHeight }}>
+    <View style={{ paddingBottom: 8, paddingTop: 4, height: imageHeight }}>
       <Carousel
         ref={carouselRef}
         autoplay={true}

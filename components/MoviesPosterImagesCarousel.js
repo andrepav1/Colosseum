@@ -40,9 +40,6 @@ export default function MoviesPosterImagesCarousel({images, nav, darkMode }) {
         inactiveSlideOpacity={1}
         onScroll={({nativeEvent: e}) => setCurrIndex(Math.ceil((e.contentOffset.x/e.contentSize.width)*images.length*offsetMultiplicator))}
       />
-      <View style={{ position: "absolute", top: 166, alignSelf: "center"}}>
-        <CarouselProgressIndicator current={currIndex} total={images.length} />
-      </View>
     </View>
   );
 }
@@ -50,7 +47,8 @@ export default function MoviesPosterImagesCarousel({images, nav, darkMode }) {
 const styles = StyleSheet.create({
   imagesContainer: {
     flex: 1, 
-    height: 180,
+    height: 170,
     paddingLeft: 10,
+    // backgroundColor: "red"
   }
 });

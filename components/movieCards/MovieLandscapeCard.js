@@ -20,7 +20,7 @@ export default function MovieLandscapeCard({props, nav, darkMode}) {
   return (
     <View style={[darkMode?Style.darkCardContainer:Style.lightCardContainer,{ height: 128, width: 228, borderRadius: 4}]}>
       <TouchableOpacity onPress={onPressHandler}>
-        <Image source={{ uri: POSTER_PATH + props.backdrop_path }} borderRadius={4} style={{ resizeMode: "cover", width: "100%", height: "100%" }}/>
+        <Image source={{ uri: POSTER_PATH + props.backdrop_path }} borderRadius={4} style={{ resizeMode: "cover", width: "100%", height: "100%", backgroundColor: "#44444444" }}/>
       </TouchableOpacity>
     </View>
   );

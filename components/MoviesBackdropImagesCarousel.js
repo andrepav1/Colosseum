@@ -40,7 +40,7 @@ export default function MoviesBackdropImagesCarousel({images, nav, darkMode }) {
         onScroll={({nativeEvent: e}) => setCurrIndex(Math.ceil((e.contentOffset.x/e.contentSize.width)*images.length))}
       />
       <View style={{ position: "absolute", top: 164, alignSelf: "center"}}>
-        <CarouselProgressIndicator current={currIndex} total={images.length} />
+        {/* <CarouselProgressIndicator current={currIndex} total={images.length} /> */}
       </View>
     </View>
   );
@@ -51,6 +51,5 @@ const styles = StyleSheet.create({
     flex: 1, 
     height: 180,
     paddingLeft: 10,
-
   }
 });

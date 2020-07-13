@@ -62,7 +62,7 @@ const genreObjectsArray = [
   },
   {
     "id": 10770,
-    "name": "TV Movie"
+    "name": "TV"
   },
   {
     "id": 53,
