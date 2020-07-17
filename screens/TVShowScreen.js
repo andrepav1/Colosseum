@@ -9,7 +9,7 @@ import uuid from 'uuid-random';
 import { MonoText, MonoTextBold } from '../components/StyledText';
 import DataLoadingComponent from '../components/DataLoadingComponent';
 import DataErrorComponent from '../components/DataErrorComponent';
-import MoviesPosterScrollView from '../components/MoviesPosterScrollView';
+import TVShowsPosterScrollView from '../components/TVShowsPosterScrollView';
 import MoviesCastScrollView from '../components/MoviesCastScrollView';
 import MoviesBackdropImagesCarousel from '../components/MoviesBackdropImagesCarousel';
 import MovieVideosCarousel from '../components/MovieVideosCarousel';
@@ -171,7 +171,7 @@ function TVShowScreen({ navigation, route, darkMode }) {
         <MoviesCastScrollView cast={cast} darkMode={darkMode} nav={navigation} />
         { cast.length > 0 && <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginBottom: 12, marginTop: 8 }]} />}
 
-        <TVSeasonsView tvShow={tvInfo} darkMode={darkMode} nav={navigation} />
+        <TVSeasonsView tvShow={tvInfo} darkMode={darkMode} nav={navigation} images={backdrops} />
         
         <MoviesBackdropImagesCarousel images={backdrops} nav={navigation} darkMode={darkMode} />
 
@@ -237,7 +237,7 @@ function TVShowScreen({ navigation, route, darkMode }) {
 
         { tvSimilar.length > 0 && <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginVertical: 8 }]} /> }
 
-        <MoviesPosterScrollView sectionName={"Similar TV Shows"} movies={tvSimilar} darkMode={darkMode} nav={navigation} />
+        <TVShowsPosterScrollView sectionName={"Similar TV Shows"} tvShows={tvSimilar} darkMode={darkMode} nav={navigation} />
 
       </ScrollView>
     </View>

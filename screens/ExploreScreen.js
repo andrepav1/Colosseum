@@ -32,6 +32,7 @@ import {
 import {connect} from 'react-redux';
 
 function ExploreScreen({ navigation, route, darkMode }) {
+  console.log("refresha");
 
   // =================================================================
   // React Hooks 

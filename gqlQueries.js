@@ -121,8 +121,26 @@ query($id: ID!) {
 `;
 
 const SEARCH_MOVIE = gql`
-query($params: SearchMovieParameters!) {
+query($params: SearchParameters!) {
   searchMovie(params: $params) {
+    page,
+    total_pages,
+    total_results,
+    results {
+      id,
+      title,
+      overview,
+      poster_path,
+      backdrop_path,
+      genre_ids
+    }
+  }
+}
+`;
+
+const SEARCH_MULTI = gql`
+query($params: SearchParameters!) {
+  searchMulti(params: $params) {
     page,
     total_pages,
     total_results,

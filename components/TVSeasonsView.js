@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import Carousel from 'react-native-snap-carousel';
 import uuid from 'uuid-random';
 
 // app components
@@ -18,12 +19,16 @@ import { useQuery } from '@apollo/react-hooks';
 import { 
   SEASON_INFO
 } from '../gqlQueries'
+  // "w300",
+  // "w780",
+  // "w1280",
+  // "original"
+const IMAGE_PATH = 'https://image.tmdb.org/t/p/w780/';
 
-export default function TVSeasonsView({tvShow, variables, darkMode, nav}) {
+export default function TVSeasonsView({tvShow, images, variables, darkMode, nav}) {
+  const carouselRef = React.useRef();
   
-  React.useEffect(()=> { tvShow.seasons.push(tvShow.seasons.shift()) },[]);
-
-  const [seasonVisible, setSeasonVisible] = React.useState(2);
+  const [seasonVisible, setSeasonVisible] = React.useState(1);
 
   const onSeasonPressedHandler = (season_number) => {
     setSeasonVisible(season_number);
@@ -32,23 +37,26 @@ export default function TVSeasonsView({tvShow, variables, darkMode, nav}) {
   return (
     <View style={{ marginVertical: 8 }}>
 
-      <View style={{ flexDirection: "row", paddingHorizontal: 16, marginBottom: 8 }}>  
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        >
-          {
-            tvShow.seasons.map(season => (
-              <TouchableOpacity onPress={() => onSeasonPressedHandler(season.season_number)} key={uuid()}>
-                <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ textAlign: "left", paddingRight: 8 }]}>{season.name}</MonoTextBold>
-              </TouchableOpacity>
-            ))
-          }
-        </ScrollView>
+      <View style={{ marginBottom: 8 }}>  
+        <Carousel
+          ref={carouselRef}
+          data={tvShow.seasons}
+          containerCustomStyle={{ flexDirection: "column" }}
+          renderItem={({item, index}) => (
+            <View key={uuid()} style={{ width: width }}>
+              <TVSeasonCard tvShow={tvShow} seasonNumber={(index+1)%tvShow.seasons.length} nav={nav} darkMode={darkMode} />
+            </View>
+          )}
+          sliderWidth={width}
+          itemWidth={width}
+          activeSlideAlignment={"center"}
+          inactiveSlideScale={1}
+          inactiveSlideOpacity={1}
+        />
       </View>
 
       <View>
-        <TVSeasonCard tvShow={tvShow} season={seasonVisible} nav={nav} darkMode={darkMode} onSeasonPressedHandler={onSeasonPressedHandler} />
+        {/* <TVSeasonCard tvShow={tvShow} season={seasonVisible} nav={nav} darkMode={darkMode} /> */}
       </View>
 
     </View>
