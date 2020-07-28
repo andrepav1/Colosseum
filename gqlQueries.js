@@ -60,6 +60,7 @@ query($params: DiscoverMoviesParameters!) {
     total_results,
     results {
       id,
+      media_type,
       title,
       overview,
       poster_path,
@@ -71,14 +72,15 @@ query($params: DiscoverMoviesParameters!) {
 `;
 
 const DISCOVER_TV = gql`
-query($params: DiscoverMoviesParameters!) {
-  discoverMovie(params: $params) {
+query($params: DiscoverTvParameters!) {
+  discoverTv(params: $params) {
     page,
     total_pages,
     total_results,
     results {
       id,
       name,
+      media_type,
       overview,
       poster_path,
       backdrop_path,
@@ -129,6 +131,7 @@ query($params: SearchParameters!) {
     results {
       id,
       title,
+      media_type,
       overview,
       poster_path,
       backdrop_path,
@@ -145,12 +148,24 @@ query($params: SearchParameters!) {
     total_pages,
     total_results,
     results {
-      id,
-      title,
-      overview,
-      poster_path,
-      backdrop_path,
-      genre_ids
+      ...on MovieBasic {
+        media_type,
+        id,
+        title,
+        poster_path,
+      }
+      ...on TVShowBasic {
+        media_type,
+        id,
+        name,
+        poster_path,
+      }
+      ...on PersonDetail {
+        media_type,
+        id,
+        name,
+        profile_path,
+      }
     }
   }
 }
@@ -423,14 +438,26 @@ query($tv_id: ID!, $season_number: Int!) {
 }
 `;
 
+const AUTOCOMPLETE_MULTI_SEARCH = gql`
+query($query: String) {
+  autocompleteMultiSearch(query: $query) {
+    id,
+    media_type,
+    name
+  }
+}
+`;
+
 export {
   MOVIE_POPULAR,
   MOVIE_TOP_RATED,
   MOVIE_NOW_PLAYING,
   MOVIE_RECOMMENDATIONS,
   DISCOVER_MOVIE,
+  DISCOVER_TV,
   MOVIE_INFO,
   SEARCH_MOVIE,
+  SEARCH_MULTI,
   MOVIE_VIDEOS,
   MOVIE_IMAGES,
   MOVIE_POSTER_IMAGES,
@@ -449,5 +476,7 @@ export {
   TV_KEYWORDS,
   TV_CREDITS,
   TV_CAST,
-  SEASON_INFO
+  SEASON_INFO,
+  AUTOCOMPLETE_MULTI_SEARCH,
+
 }

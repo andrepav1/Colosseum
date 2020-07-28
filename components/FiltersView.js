@@ -14,7 +14,7 @@ import Layout from '../constants/Layout';
 const { width, height } = Layout.window;
 import { countriesObjectArray, languagesObjectArray, genreObjectsArray, years } from '../constants/MovieData';
 
-export default function FiltersView({filters, darkMode, nav}) {
+export default function FiltersView({darkMode, nav}) {
 
   const [selectedValue, setSelectedValue] = React.useState();
   const [filterValues, setFilterValues] = React.useState();
@@ -29,7 +29,7 @@ export default function FiltersView({filters, darkMode, nav}) {
       case "language":  return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query: "DISCOVER_MOVIE", variables: { with_original_language: selectedValue, page: 1 }, titleQuery: "Language" }});
       case "region":    return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query: "DISCOVER_MOVIE", variables: { region: selectedValue, page: 1 }, titleQuery: "Region" }});
       case "genre":     return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query: "DISCOVER_MOVIE", variables: { with_genres: selectedValue, page: 1 }, titleQuery: "Genre" }});
-      case "year":     return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query: "DISCOVER_MOVIE", variables: { year: parseInt(selectedValue), page: 1 }, titleQuery: "Year" }});
+      case "year":      return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query: "DISCOVER_MOVIE", variables: { year: parseInt(selectedValue), page: 1 }, titleQuery: "Year" }});
     }
   }
 

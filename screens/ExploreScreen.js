@@ -79,7 +79,7 @@ function ExploreScreen({ navigation, route, darkMode }) {
 
   // =================================================================
   // Rendering loading component when data is refetching 
-  // for(const response of movieResponses) { if (response.networkStatus == 4) return <DataLoadingComponent darkMode={darkMode} /> };
+  for(const response of movieResponses) { if (response.networkStatus == 4) return <DataLoadingComponent darkMode={darkMode} /> };
 
   // =================================================================
   // Rendering error component if at least one error occurs 
@@ -106,14 +106,28 @@ function ExploreScreen({ navigation, route, darkMode }) {
     }
   }
 
+  const shuffle = (array) => {
+    
+    for(let i = array.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * i);
+      const temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
+  }
+
   // =================================================================
   // SCREEN RENDERING
 
+  const carouselMovies = [movieNowPlaying, moviePopular][Math.floor(Math.random()*2)];
+  const movieArray = shuffle(movieResponses);
+  
   return (
     <View style={[darkMode?Style.darkContainer:Style.lightContainer,{ }]}>
 
       <FlatList
-        data={[movieNowPlaying].concat(movieResponses)}
+        data={[carouselMovies].concat(movieArray)}
         initialNumToRender={5}
         renderItem={renderItem}
         keyExtractor={uuid}

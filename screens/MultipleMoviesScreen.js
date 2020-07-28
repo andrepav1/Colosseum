@@ -9,6 +9,8 @@ import DataLoadingComponent from '../components/DataLoadingComponent';
 import DataErrorComponent from '../components/DataErrorComponent';
 import MultipleMoviesFooter from '../components/MultipleMoviesFooter';
 import MultipleMovieCard from '../components/movieCards/MultipleMovieCard';
+import MultipleTVCard from '../components/movieCards/MultipleTVCard';
+import MultiplePersonCard from '../components/movieCards/MultiplePersonCard';
 
 // constants
 import Colors from '../constants/Colors';
@@ -34,7 +36,7 @@ function MultipleMoviesScreen({ navigation, route, darkMode }) {
 
   // =================================================================
   // useQuery Hooks
-  const moviesResponse = useQuery(GQL_QUERIES[route.params.query], { variables: { params: route.params.variables } });
+  const moviesResponse = useQuery(GQL_QUERIES[route.params.query], { variables: { params: route.params.variables }, fetchPolicy: 'no-cache' });
 
   // =================================================================
   // Rendering loading component when data is loading 
@@ -53,10 +55,20 @@ function MultipleMoviesScreen({ navigation, route, darkMode }) {
   const movies = moviesResponse.data[Object.keys(moviesResponse.data)[0]];
   
   const getReleaseDate = () => movieInfo.release_date?" (" + movieInfo.release_date.substring(0,4) + ")":"";
-  
+
+  const renderItem = ({item}) => {
+    console.log(item);
+    switch (item.media_type) {
+      case "movie":   return <MultipleMovieCard props={item} darkMode={darkMode} nav={navigation} />;
+      case "tv":      return <MultipleTVCard props={item} darkMode={darkMode} nav={navigation} />;
+      case "person":  return <MultiplePersonCard props={item} darkMode={darkMode} nav={navigation} />;
+      default:        return <MultipleMovieCard props={item} darkMode={darkMode} nav={navigation} />;
+    }
+  }
+
   // =================================================================
   // SCREEN RENDERING
-  
+  console.log();
   return (
     <View style={darkMode?Style.darkContainer:Style.lightContainer}>
       <FlatList
@@ -64,8 +76,8 @@ function MultipleMoviesScreen({ navigation, route, darkMode }) {
         numColumns={2}
         ListFooterComponent={<MultipleMoviesFooter page={movies.page} total_pages={movies.total_pages} total_results={movies.total_results} variables={route.params.variables} refetch={moviesResponse.refetch} darkMode={darkMode} />}
         data={movies.results}
-        keyExtractor={(movies) => movies.id}
-        renderItem={({item}) => <MultipleMovieCard props={item} nav={navigation} darkMode={darkMode} />}
+        keyExtractor={(data) => data.id} 
+        renderItem={renderItem}
       />
     </View>
   );

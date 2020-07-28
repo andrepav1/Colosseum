@@ -11,24 +11,24 @@ const { width, height } = Layout.window;
 
 const POSTER_PATH = 'https://image.tmdb.org/t/p/w342/';
 
-export default function MultipleMovieCard({props, nav, darkMode}) {
+export default function MultiplePersonCard({props, nav, darkMode}) {
   // console.log(props)
 
   const aspectRatio = 1.5;
   const imageWidth = width*0.49;
   const imageHeight = imageWidth*aspectRatio;
-
+  
   const onPressHandler = () => {
-    nav.navigate("MovieScreen", props);
+    nav.navigate("PersonScreen", props);
   }
 
   return (
     <View style={{ padding: 1 }}>
       <View style={{ height: imageHeight, width: imageWidth, overflow: "hidden" }}>
-        <MonoTextBold numberOfLines={3} style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ position: "absolute", top: imageHeight-80, textAlign: "center", alignSelf: "center", padding: 16 }]}>{props.title}</MonoTextBold>
         <TouchableWithoutFeedback onPress={onPressHandler}>
-          <Image source={{ uri: POSTER_PATH + props.poster_path}} style={{ resizeMode: "cover", width: "100%", height: "100%", backgroundColor: "#88888844" }}/>
+          <Image source={{ uri: POSTER_PATH + props.profile_path}} style={{ resizeMode: "cover", width: "100%", height: "100%", backgroundColor: "#88888844" }}/>
         </TouchableWithoutFeedback>
+        <MonoTextBold numberOfLines={2} style={[Style.mediumLightText,{ position: "absolute", top: imageHeight-44, width: "90%", textAlign: "center", alignSelf: "center" }]}>{props.name}</MonoTextBold>
       </View>
     </View>
   );
