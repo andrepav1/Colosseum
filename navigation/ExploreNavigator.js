@@ -5,6 +5,7 @@ import { CommonActions } from '@react-navigation/native';
 import ExploreScreen from '../screens/ExploreScreen';
 import MovieScreen from '../screens/MovieScreen';
 import TVShowScreen from '../screens/TVShowScreen';
+import SeasonScreen from '../screens/SeasonScreen';
 import MultipleMoviesScreen from '../screens/MultipleMoviesScreen';
 import PersonScreen from '../screens/PersonScreen';
 
@@ -80,6 +81,19 @@ function ExploreNavigator({ navigation, darkMode }) {
       <Tab.Screen
         name="TVShowScreen"
         component={TVShowScreen}
+        options={{
+          title: null,
+          headerShown: true, 
+          headerStyle: {
+            backgroundColor: darkMode?Color.darkHeaderColor:Color.lightHeaderColor,
+            elevation: darkMode?0:8, // remove shadow on Android
+            shadowOpacity: darkMode?0:0.2, // remove shadow on iOS
+          },
+        }}
+      />
+      <Tab.Screen
+        name="SeasonScreen"
+        component={SeasonScreen}
         options={{
           title: null,
           headerShown: true, 

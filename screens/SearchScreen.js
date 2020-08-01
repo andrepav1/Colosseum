@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Image, View, TouchableOpacity, Button } from 'react-native';
+import Constants from 'expo-constants';
 import SearchHeader from 'react-native-search-header';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -14,22 +15,19 @@ import Layout from '../constants/Layout'
 const { width, height } = Layout.window;
 
 import { useLazyQuery } from '@apollo/react-hooks';
-import { AUTOCOMPLETE_MULTI_SEARCH } from '../gqlQueries';
 
 import {connect} from 'react-redux';
 
+const autocompletionsUri = `http://${Constants.manifest.debuggerHost.split(':').shift()}:4000/autocompletions?text=`;
+
 function SearchScreen({ navigation, darkMode }) {
 
-  const [getAutocompletions, { loading, data }] = useLazyQuery(AUTOCOMPLETE_MULTI_SEARCH);
-
-  const onSuggestionPressedHandler = ({ nativeEvent }) => {
-    switch (nativeEvent.type) {
-      case "history": return;
-      case "tv": return navigation.navigate('Explore', { screen: 'TVShowScreen', params: { id: nativeEvent.id }});
-      case "movie": return navigation.navigate('Explore', { screen: 'MovieScreen', params: { id: nativeEvent.id }});
-      case "person": return navigation.navigate('Explore', { screen: 'PersonScreen', params: { id: nativeEvent.id }});
+  const onSuggestionPressedHandler = (suggestion) => {
+    switch (suggestion.suggestionType) {
+      case "tv": return navigation.navigate('Explore', { screen: 'TVShowScreen', params: { id: suggestion.id }});
+      case "movie": return navigation.navigate('Explore', { screen: 'MovieScreen', params: { id: suggestion.id }});
+      case "person": return navigation.navigate('Explore', { screen: 'PersonScreen', params: { id: suggestion.id }});
     }
-    
   }
 
   const onSearchHandler = ({nativeEvent:{text}}) => {
@@ -42,10 +40,16 @@ function SearchScreen({ navigation, darkMode }) {
   const onGetAutocompletionsHandler = async (text) => {
     if (!text) return [];
 
-    getAutocompletions({ variables: { query: text }})
+    try {
+      const response = await fetch(autocompletionsUri+text, {
+        method: 'GET'
+      });
+      return response.json();      
+    } catch (error) {
+      console.log("error", error);
+      return [];
+    }
 
-    if(data)
-      return data.autocompleteMultiSearch.map(({name}) => name);
   }
 
   return (

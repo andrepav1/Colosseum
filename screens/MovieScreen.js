@@ -9,7 +9,7 @@ import uuid from 'uuid-random';
 import { MonoText, MonoTextBold } from '../components/StyledText';
 import DataLoadingComponent from '../components/DataLoadingComponent';
 import DataErrorComponent from '../components/DataErrorComponent';
-import MoviesPosterScrollView from '../components/MoviesPosterScrollView';
+import ContentPortraitFlatList from '../components/ContentPortraitFlatList';
 import MoviesCastScrollView from '../components/MoviesCastScrollView';
 import MoviesBackdropImagesCarousel from '../components/MoviesBackdropImagesCarousel';
 import MovieVideosCarousel from '../components/MovieVideosCarousel';
@@ -56,7 +56,7 @@ function MovieScreen({ navigation, route, darkMode }) {
   // =================================================================
   // useQuery Hooks
   const movieInfoResponse = useQuery(MOVIE_INFO, { variables: { id: route.params.id }});
-  const movieSimilarResponse = useQuery(MOVIE_SIMILAR, { variables: { id: route.params.id }});
+  const movieSimilarResponse = useQuery(MOVIE_SIMILAR, { variables: { params: { id: route.params.id }}});
   const movieVideosResponse = useQuery(MOVIE_VIDEOS, { variables: { id: route.params.id }});
   const movieBackdropImagesResponse = useQuery(MOVIE_BACKDROP_IMAGES, { variables: { id: route.params.id }});
   const movieKeywordsResponse = useQuery(MOVIE_KEYWORDS, { variables: { id: route.params.id }});
@@ -92,7 +92,7 @@ function MovieScreen({ navigation, route, darkMode }) {
   // =================================================================
   // DESTRUCTURING RESPONSE OBJECTS
   const { data: { movieInfo }} = movieInfoResponse;
-  const { data: { movieSimilar }} = movieSimilarResponse;
+  const { data: { movieSimilar: { results: similarMovies } }} = movieSimilarResponse;
   const { data: { movieVideos }} = movieVideosResponse;
   const { data: { movieImages: { backdrops } }} = movieBackdropImagesResponse;
   const { data: { movieKeywords } } = movieKeywordsResponse;
@@ -254,24 +254,26 @@ function MovieScreen({ navigation, route, darkMode }) {
           }
         </View>
 
-        { movieSimilar.length > 0 && <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginVertical: 8 }]} /> }
+        { similarMovies.length > 0 && <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginVertical: 8 }]} /> }
 
-        <MoviesPosterScrollView sectionName={"Similar Movies"} movies={movieSimilar} darkMode={darkMode} nav={navigation} />
+        <ContentPortraitFlatList 
+          sectionName={"Similar Movies"} 
+          content={similarMovies} 
+          darkMode={darkMode} 
+          nav={navigation} 
+          seeMoreData={{ query: 'MOVIE_SIMILAR', variables: { id: route.params.id }, titleQuery: "Similar Movies" }}
+        />
 
       </ScrollView>
     </View>
   );
 }
 
-  // budget : Float
-  // genres : [Genre]
-  // imdb_id : String
-  // popularity : Float
-  // tagline : String
-  // title : String
-  // video : Boolean
-  // vote_average : Float
-  // vote_count : Int
+// budget : Float
+// imdb_id : String
+// popularity : Float
+// vote_average : Float
+// vote_count : Int
 
 const mapStateToProps = (state) => {
   return {

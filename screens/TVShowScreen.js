@@ -9,7 +9,7 @@ import uuid from 'uuid-random';
 import { MonoText, MonoTextBold } from '../components/StyledText';
 import DataLoadingComponent from '../components/DataLoadingComponent';
 import DataErrorComponent from '../components/DataErrorComponent';
-import TVShowsPosterScrollView from '../components/TVShowsPosterScrollView';
+import ContentPortraitFlatList from '../components/ContentPortraitFlatList';
 import MoviesCastScrollView from '../components/MoviesCastScrollView';
 import MoviesBackdropImagesCarousel from '../components/MoviesBackdropImagesCarousel';
 import MovieVideosCarousel from '../components/MovieVideosCarousel';
@@ -59,7 +59,7 @@ function TVShowScreen({ navigation, route, darkMode }) {
 
   const responses = {
     tvInfoResponse: useQuery(TV_INFO, { variables: { tv_id: route.params.id }}),
-    tvSimilarResponse: useQuery(TV_SIMILAR, { variables: { tv_id: route.params.id }}),
+    tvSimilarResponse: useQuery(TV_SIMILAR, { variables: { params: { id: route.params.id }}}),
     tvVideosResponse: useQuery(TV_VIDEOS, { variables: { tv_id: route.params.id }}),
     tvBackdropImagesResponse: useQuery(TV_BACKDROP_IMAGES, { variables: { tv_id: route.params.id }}),
     tvKeywordsResponse: useQuery(TV_KEYWORDS, { variables: { tv_id: route.params.id }}),
@@ -76,17 +76,17 @@ function TVShowScreen({ navigation, route, darkMode }) {
   
   // =================================================================
   // Rendering error component if at least one error occurs 
-  for(const res in responses) { if (responses[res].error) return <DataLoadingComponent DataErrorComponent={response} darkMode={darkMode} /> };
+  for(const res in responses) { if (responses[res].error) return <DataErrorComponent props={res} darkMode={darkMode} /> };
 
   // =================================================================
   // DESTRUCTURING RESPONSE OBJECTS
   const { data: { tvInfo }} = responses.tvInfoResponse;
-  const { data: { tvSimilar }} = responses.tvSimilarResponse;
+  const { data: { tvSimilar: { results: similarTvShows } }} = responses.tvSimilarResponse;
   const { data: { tvVideos }} = responses.tvVideosResponse;
   const { data: { tvImages: { backdrops } }} = responses.tvBackdropImagesResponse;
   const { data: { tvKeywords } } = responses.tvKeywordsResponse;
   const { data: { tvCredits: { cast } } } = responses.tvCastResponse;
-
+  
   // =================================================================
   // Other functions
   
@@ -140,7 +140,7 @@ function TVShowScreen({ navigation, route, darkMode }) {
 
     return ytVideos.length == 0?{key: null}:ytVideos[0];
   }
-  
+
   // =================================================================
   // SCREEN RENDERING
   
@@ -171,8 +171,8 @@ function TVShowScreen({ navigation, route, darkMode }) {
         <MoviesCastScrollView cast={cast} darkMode={darkMode} nav={navigation} />
         { cast.length > 0 && <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginBottom: 12, marginTop: 8 }]} />}
 
-        <TVSeasonsView tvShow={tvInfo} darkMode={darkMode} nav={navigation} images={backdrops} />
-        
+        <TVSeasonsView tvInfo={tvInfo} darkMode={darkMode} nav={navigation} images={backdrops} />
+
         <MoviesBackdropImagesCarousel images={backdrops} nav={navigation} darkMode={darkMode} />
 
         <MovieVideosCarousel videos={tvVideos} nav={navigation} darkMode={darkMode} />
@@ -186,7 +186,7 @@ function TVShowScreen({ navigation, route, darkMode }) {
               <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{tvInfo.original_name}</MonoText>
             </View>
           }
-          {/* {
+          {
             tvInfo.original_language &&
             <View style={{ flexDirection: "row", marginBottom: 4 }}>
               <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Original Language:</MonoTextBold>
@@ -194,10 +194,10 @@ function TVShowScreen({ navigation, route, darkMode }) {
             </View>
           }
           {
-            tvInfo.spoken_languages.length > 0 &&
+            tvInfo.origin_country.length > 0 &&
             <View style={{ flexDirection: "row", marginBottom: 4 }}>
-              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Spoken Languages:</MonoTextBold>
-              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{tvInfo.spoken_languages.map(lang => lang.name + ", ")}</MonoText>
+              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Origin Countries:</MonoTextBold>
+              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{tvInfo.origin_country.map(country => country + ", ")}</MonoText>
             </View>
           }
           {
@@ -208,19 +208,19 @@ function TVShowScreen({ navigation, route, darkMode }) {
             </View>
           }
           {
-            tvInfo.production_countries.length > 0 &&
+            tvInfo.networks.length > 0 &&
             <View style={{ flexDirection: "row", marginBottom: 4 }}>
-              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Production Countries:</MonoTextBold>
-              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{tvInfo.production_countries.map(country => country.name + ", ")}</MonoText>
+              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Networks:</MonoTextBold>
+              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{tvInfo.networks.map(network => network.name + ", ")}</MonoText>
             </View>
           }
           {
-            tvInfo.runtime !== null &&
+            tvInfo.number_of_seasons !== null && tvInfo.number_of_episodes !== null &&
             <View style={{ flexDirection: "row", marginBottom: 4 }}>
-              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Runtime:</MonoTextBold>
-              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>±{tvInfo.runtime} minutes</MonoText>
+              <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "45%" }]}>Seasons - Episodes:</MonoTextBold>
+              <MonoText style={[darkMode?Style.smallLightText:Style.smallDarkText,{ width: "55%" }]}>{tvInfo.number_of_seasons + " - " + tvInfo.number_of_episodes}</MonoText>
             </View>
-          } */}
+          }
         </View>
         
         <View style={{ width: width-20, marginLeft: 8, flexDirection: "row", flexWrap:'wrap', marginBottom: 8 }}>
@@ -235,9 +235,15 @@ function TVShowScreen({ navigation, route, darkMode }) {
           }
         </View>
 
-        { tvSimilar.length > 0 && <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginVertical: 8 }]} /> }
+        { similarTvShows.length > 0 && <Divider style={[darkMode?Style.lightDividerStyle:Style.darkDividerStyle,{ marginVertical: 8 }]} /> }
 
-        <TVShowsPosterScrollView sectionName={"Similar TV Shows"} tvShows={tvSimilar} darkMode={darkMode} nav={navigation} />
+        <ContentPortraitFlatList 
+          sectionName={"Similar TV Shows"} 
+          content={similarTvShows} 
+          darkMode={darkMode} 
+          nav={navigation} 
+          seeMoreData={{ query: 'TV_SIMILAR', variables: { id: route.params.id }, titleQuery: "Similar TV Shows" }}
+        />
 
       </ScrollView>
     </View>

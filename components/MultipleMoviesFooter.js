@@ -10,10 +10,23 @@ import Style from '../constants/Style';
 import Layout from '../constants/Layout';
 const { width, height } = Layout.window;
 
-export default function MultipleMoviesFooter({ page, total_pages, total_results, darkMode, refetch, variables }) {
+export default function MultipleMoviesFooter({ page, total_pages, total_results, darkMode, refetch, variables, pageNumberPressedHandler }) {
   
+  const getPageNumberContainer = (currPage, extraStyle) => {
+    return (
+      <TouchableOpacity onPress={() => onPagePressedHandler(currPage)}>
+        <View style={[styles.pageNumberContainer, { ...extraStyle }, { backgroundColor: currPage===page?"#00000055":"#88888833" }]}>
+          <MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>{currPage}</MonoTextBold>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
   const onPagePressedHandler = (_page) => {
-    refetch({ params: { ...variables, page: _page }});
+    pageNumberPressedHandler();
+    variables.page = _page;
+    refetch(variables); 
+    console.log(variables);
   }
 
   switch (total_pages) {
@@ -26,155 +39,88 @@ export default function MultipleMoviesFooter({ page, total_pages, total_results,
     case 1:
       return (
         <View style={styles.footerContainer}>
-          <TouchableOpacity onPress={() => onPagePressedHandler(1)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>1</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(1) }
         </View>
       );
     case 2:
       return (
         <View style={styles.footerContainer}>
-          <TouchableOpacity onPress={() => onPagePressedHandler(1)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>1</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(1) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(2)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>2</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(2) }
         </View>
       );
     case 3:
       return (
         <View style={styles.footerContainer}>
-          <TouchableOpacity onPress={() => onPagePressedHandler(1)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>1</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(1) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(2)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>2</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(2) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(3)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>3</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(3) }
         </View>
       );
     case 4:
       return (
         <View style={styles.footerContainer}>
-          <TouchableOpacity onPress={() => onPagePressedHandler(1)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>1</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(1) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(2)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>2</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(2) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(3)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>3</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(3) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(4)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>4</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(4) }
         </View>
       );
     case 5:
       return (
         <View style={styles.footerContainer}>
-          <TouchableOpacity onPress={() => onPagePressedHandler(1)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>1</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(1) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(2)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>2</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(2) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(3)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>3</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(3) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(4)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>4</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(4) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(5)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>5</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(5) }
         </View>
       );
     case 6:
       return (
         <View style={styles.footerContainer}>
-          <TouchableOpacity onPress={() => onPagePressedHandler(1)}>
-            <View style={[styles.pageNumberContainer,{ right: 38 }]}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>1</MonoTextBold></View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => onPagePressedHandler(2)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>2</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(1, { right: 38 }) }
+        { getPageNumberContainer(2) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(3)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>3</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(3) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(4)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>4</MonoTextBold></View>
-          </TouchableOpacity>
+        { getPageNumberContainer(4) }
           <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-          <TouchableOpacity onPress={() => onPagePressedHandler(5)}>
-            <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>5</MonoTextBold></View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => onPagePressedHandler(6)}>
-            <View style={[styles.pageNumberContainer,{ left: 38 }]}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>6</MonoTextBold></View>
-          </TouchableOpacity>
-        </View>
+        { getPageNumberContainer(5) }
+        { getPageNumberContainer(6, { left: 38 }) }  
+      </View>
       );
     default:
       break;
   }
   
 
-  let startingPage = page<3?2:page-2;
+  let startingPage = page<4?2:page-2;
   startingPage = startingPage+5 > total_pages?total_pages-5:startingPage;
 
   return (
     <View style={styles.footerContainer}>
-    
-      <TouchableOpacity onPress={() => onPagePressedHandler(1)}>
-        <View style={[styles.pageNumberContainer,{ right: 16 }]}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>1</MonoTextBold></View>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => onPagePressedHandler(startingPage)}>
-        <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>{startingPage}</MonoTextBold></View>
-      </TouchableOpacity>
-
+    { getPageNumberContainer(1, { right: 16 }) }
+    { getPageNumberContainer(startingPage) }
       <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-
-      <TouchableOpacity onPress={() => onPagePressedHandler(startingPage+1)}>
-        <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>{startingPage+1}</MonoTextBold></View>
-      </TouchableOpacity>
-
+    { getPageNumberContainer(startingPage+1) }
       <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-
-      <TouchableOpacity onPress={() => onPagePressedHandler(startingPage+2)}>
-        <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>{startingPage+2}</MonoTextBold></View>
-      </TouchableOpacity>
-
+    { getPageNumberContainer(startingPage+2) }
       <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-
-      <TouchableOpacity onPress={() => onPagePressedHandler(startingPage+3)}>
-        <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>{startingPage+3}</MonoTextBold></View>
-      </TouchableOpacity>
-
+    { getPageNumberContainer(startingPage+3) }
       <View style={[styles.pageNumberContainer, { backgroundColor: '#00000000', width: 10 }]}><View style={styles.dividerCircle}></View></View>
-
-      <TouchableOpacity onPress={() => onPagePressedHandler(startingPage+4)}>
-        <View style={styles.pageNumberContainer}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>{startingPage+4}</MonoTextBold></View>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => onPagePressedHandler(total_pages)}>
-        <View style={[styles.pageNumberContainer,{ left: 16 }]}><MonoTextBold style={darkMode?Style.smallLightText:Style.smallDarkText}>{total_pages}</MonoTextBold></View>
-      </TouchableOpacity>
+    { getPageNumberContainer(startingPage+4) }
+    { getPageNumberContainer(total_pages,{ left: 16 }) }
     </View>
   );
 }
@@ -188,7 +134,6 @@ const styles = StyleSheet.create({
     width: width,
   },
   pageNumberContainer: {
-    backgroundColor: "#88888833",
     width: 32,
     height: 32,
     borderRadius: 16,

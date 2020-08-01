@@ -15,8 +15,7 @@ const POSTER_PATH = 'http://image.tmdb.org/t/p/w780/';
 
 export default function MovieDeckCard({props, darkMode, nav }) {
 
-  const [card, setCard] = React.useState();
-  const [genres, setGenres] = React.useState(assignNumbersArrayToGenre(props.genre_ids));
+  const card = React.useRef();
   
   const onSeeMorePressedHandler = () => {
       nav.navigate('Explore', {
@@ -27,8 +26,8 @@ export default function MovieDeckCard({props, darkMode, nav }) {
 
   return (
     <View style={{ flex: 1 }}>
-      <CardFlip flipDirection={'x'} style={{ width: width-40, height: 540 }} ref={card => setCard(card)} >
-        <TouchableWithoutFeedback onPress={() => card.flip()} >
+      <CardFlip flipDirection={'x'} style={{ width: width-40, height: 540 }} ref={card} >
+        <TouchableWithoutFeedback onPress={() => card.current.flip()} >
           <View style={[darkMode?Style.darkCardContainer:Style.lightCardContainer, { flex: 1 }]}>
             <View style={styles.imageView}>
               <Image style={{ resizeMode: "center", height: 480, borderRadius: 8 }} source={{ uri: POSTER_PATH + props.poster_path}} />
@@ -38,7 +37,7 @@ export default function MovieDeckCard({props, darkMode, nav }) {
             </View>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => card.flip()} >
+        <TouchableWithoutFeedback onPress={() => card.current.flip()} >
           <View style={[darkMode?Style.darkCardContainer:Style.lightCardContainer, { flex: 1 }]}>
             <View style={styles.textView}>
               <MonoTextBold style={[ darkMode?Style.largeLightText:Style.largeDarkText, { textAlign: "center", maxWidth: "90%", marginBottom: 16, marginTop: 20 }]}>{props.title}</MonoTextBold>
@@ -57,9 +56,6 @@ export default function MovieDeckCard({props, darkMode, nav }) {
   );
 }
 
-    // <CardFlip style={[Style.lightCardContainer, { width: width-40, height: 540, alignSelf: "center" }]} ref={card => setCard(card)} >
-
-    // </CardFlip>
 const styles = StyleSheet.create({
   imageView: {
     alignSelf: "center",

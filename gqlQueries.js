@@ -217,11 +217,16 @@ query($id: ID!) {
 `;
 
 const MOVIE_SIMILAR = gql`
-query($id: ID!) {
-  movieSimilar(id: $id) {
-    id,
-    title,
-    poster_path,
+query($params: MovieSimilarParameters!) {
+  movieSimilar(params: $params) {
+    page,
+    total_pages,
+    total_results,
+    results {
+      id,
+      title,
+      poster_path,
+    }
   }
 }
 `;
@@ -365,11 +370,16 @@ query($tv_id: ID!) {
 `;
 
 const TV_SIMILAR = gql`
-query($tv_id: ID!) {
-  tvSimilar(tv_id: $tv_id) {
-    id,
-    name,
-    poster_path,
+query($params: TvSimilarParameters!) {
+  tvSimilar(params: $params) {
+    page,
+    total_pages,
+    total_results,
+    results {
+      id,
+      name,
+      poster_path,
+    }
   }
 }
 `;
@@ -408,6 +418,27 @@ query($tv_id: ID!) {
 }
 `;
 
+const PERSON_TV_CREDITS = gql`
+query($id: ID!) {
+  personTvCredits(id: $id) {
+    cast {
+      id,
+      name,
+      poster_path,
+      character,
+      first_air_date
+    }
+    crew {
+      id,
+      name,
+      poster_path,
+      job,
+      first_air_date
+    }
+  }
+}
+`;
+
 const TV_CAST = gql`
 query($tv_id: ID!) {
   tvCredits(tv_id: $tv_id) {
@@ -415,7 +446,7 @@ query($tv_id: ID!) {
       id,
       name, 
       character,
-      profile_path
+      profile_path,
     }
   }
 }
@@ -425,12 +456,14 @@ const SEASON_INFO = gql`
 query($tv_id: ID!, $season_number: Int!) {
   seasonInfo(tv_id: $tv_id, season_number: $season_number) {
     name,
+    season_number,
     overview,
     episodes {
-      episode_number,
+      episode_number, 
       name,
       overview,
-      air_date
+      air_date,
+      still_path
     }, 
     air_date,
     poster_path
@@ -475,6 +508,7 @@ export {
   TV_BACKDROP_IMAGES,
   TV_KEYWORDS,
   TV_CREDITS,
+  PERSON_TV_CREDITS,
   TV_CAST,
   SEASON_INFO,
   AUTOCOMPLETE_MULTI_SEARCH,

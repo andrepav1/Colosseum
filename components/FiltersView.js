@@ -22,26 +22,76 @@ export default function FiltersView({darkMode, nav}) {
 
   const getFilterStyle = (filter) => filter === selectedFilter?{ backgroundColor: "#BBBBBBBB"}:{};
 
-  const onSearchHandler = () => {
-    // console.log(selectedValue);
+  const onSearchHandler = (query) => {
     
     switch (selectedFilter) {
-      case "language":  return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query: "DISCOVER_MOVIE", variables: { with_original_language: selectedValue, page: 1 }, titleQuery: "Language" }});
-      case "region":    return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query: "DISCOVER_MOVIE", variables: { region: selectedValue, page: 1 }, titleQuery: "Region" }});
-      case "genre":     return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query: "DISCOVER_MOVIE", variables: { with_genres: selectedValue, page: 1 }, titleQuery: "Genre" }});
-      case "year":      return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query: "DISCOVER_MOVIE", variables: { year: parseInt(selectedValue), page: 1 }, titleQuery: "Year" }});
+      case "language": 
+        return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query, variables: { with_original_language: selectedValue, page: 1 }, titleQuery: "Language" }});
+      // case "region": 
+      //   return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query, variables: { region: selectedValue, page: 1 }, titleQuery: "Region" }});
+      case "genre": 
+        let genreObj = JSON.parse(selectedValue);
+        let genreId = query === "DISCOVER_MOVIE"?genreObj.id:genreObj.tv_id;
+        return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query, variables: { with_genres: genreId.toString(), page: 1 }, titleQuery: "Genre" }});
+      case "year": 
+        return nav.navigate('Explore', { screen: 'MultipleMoviesScreen', params: { query, variables: { year: parseInt(selectedValue), page: 1 }, titleQuery: "Year" }});
     }
+
   }
 
   React.useEffect(() => {
     switch (selectedFilter) {
       case "language":  return setFilterValues(languagesObjectArray.map(item => { return { name: item.english_name, value: item.iso_639_1 }}));
-      case "region":    return setFilterValues(countriesObjectArray.map(item => { return { name: item.english_name, value: item.iso_3166_1 }}));
-      case "genre":     return setFilterValues(genreObjectsArray.map(item => { return { name: item.name, value: item.id.toString() }}));
+      // case "region":    return setFilterValues(countriesObjectArray.map(item => { return { name: item.english_name, value: item.iso_3166_1 }}));
+      case "genre":     return setFilterValues(genreObjectsArray.map(item => { return { name: item.name, value: JSON.stringify(item) }}));
       case "year":      return setFilterValues(years.map(item => { return { name: item.toString(), value: item.toString()}}));
       default: setFilterValues(null); 
     }
   },[selectedFilter])
+
+  React.useEffect(() => {
+    if(filterValues) setSelectedValue(filterValues[0].value);
+  },[filterValues])
+
+  const isValidJSON = (str) => {
+    try { JSON.parse(str); } 
+    catch (e) { return false; }
+    return true;
+  }
+
+  const getTVButton = () => {
+
+    if(!selectedValue) return null;
+    
+    if(selectedFilter === "year") return null;
+    
+    if(selectedFilter === "genre" && !isValidJSON(selectedValue)) return null;
+    if(selectedFilter === "genre" && !JSON.parse(selectedValue).tv_id) return null;
+
+    return (
+      <TouchableOpacity onPress={() => onSearchHandler('DISCOVER_TV')}>
+        <View style={[darkMode?styles.darkCardContainer:Style.lightCardContainer,{ flex: 1, flexDirection: "column", justifyContent: "center", alignSelf: "center", paddingVertical: 8 ,paddingHorizontal: 16, marginBottom: 12 }]}>
+          <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ }]}>Search TV Shows</MonoTextBold>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  const getMovieButton = () => {
+
+    if(!selectedValue) return null;
+
+    if(selectedFilter === "genre" && !isValidJSON(selectedValue)) return null;
+    if(selectedFilter === "genre" && !JSON.parse(selectedValue).id) return null;
+
+    return (
+      <TouchableOpacity onPress={() => onSearchHandler('DISCOVER_MOVIE')}>
+        <View style={[darkMode?styles.darkCardContainer:Style.lightCardContainer,{ flex: 1, flexDirection: "column", justifyContent: "center", alignSelf: "center", paddingVertical: 8 ,paddingHorizontal: 16, marginBottom: 12 }]}>
+          <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ }]}>Search Movies</MonoTextBold>
+        </View>
+      </TouchableOpacity>
+    );
+  }
 
   return (
     <View style={styles.filtersContainer}>
@@ -51,11 +101,11 @@ export default function FiltersView({darkMode, nav}) {
         <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText, { marginLeft: 16, width: "20%", paddingTop: 14 }]}>Filter by:</MonoTextBold>
 
         <ScrollView horizontal={true} contentContainerStyle={{ flexDirection: "row", width: "80%" }}>
-          <TouchableOpacity onPress={() => setSelectedFilter(selectedFilter==="region"?null:"region")}>
+          {/* <TouchableOpacity onPress={() => setSelectedFilter(selectedFilter==="region"?null:"region")}>
             <View style={[darkMode?styles.darkCardContainer:Style.lightCardContainer,styles.filterLabel,getFilterStyle("region")]}>
               <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText]}>Region</MonoTextBold>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity onPress={() => setSelectedFilter(selectedFilter==="language"?null:"language")}>
             <View style={[darkMode?styles.darkCardContainer:Style.lightCardContainer,styles.filterLabel,getFilterStyle("language")]}>
               <MonoTextBold style={[darkMode?Style.smallLightText:Style.smallDarkText]}>Language</MonoTextBold>
@@ -85,14 +135,12 @@ export default function FiltersView({darkMode, nav}) {
           >
             { filterValues.sort((a,b) => a.name > b.name).map(item => (<Picker.Item key={uuid()} label={item.name} value={item.value} />)) }
           </Picker>
-          <TouchableOpacity onPress={onSearchHandler}>
-            <View style={[darkMode?styles.darkCardContainer:Style.lightCardContainer,{ flex: 1, flexDirection: "column", justifyContent: "center", alignSelf: "center", paddingVertical: 8 ,paddingHorizontal: 16, marginBottom: 12 }]}>
-              <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ }]}>Search Movies</MonoTextBold>
-            </View>
-          </TouchableOpacity>
+          <View style={{ flexDirection: "row", justifyContent: "space-evenly", marginBottom: 8 }}>
+            { getTVButton() }
+            { getMovieButton() }
+          </View>
         </View>
       }
-
     </View>
   );
 }

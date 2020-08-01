@@ -6,8 +6,8 @@ import uuid from 'uuid-random';
 
 // app components
 import { MonoText } from '../components/StyledText';
-import MoviesPosterScrollView from '../components/MoviesPosterScrollView';
-import MoviesScrollView from '../components/MoviesScrollView';
+import ContentPortraitFlatList from '../components/ContentPortraitFlatList';
+import ContentBackdropFlatList from '../components/ContentBackdropFlatList';
 import MoviesCarousel from '../components/MoviesCarousel';
 import DataLoadingComponent from '../components/DataLoadingComponent';
 import DataErrorComponent from '../components/DataErrorComponent';
@@ -27,12 +27,20 @@ import {
   MOVIE_TOP_RATED,
   MOVIE_NOW_PLAYING,
   DISCOVER_MOVIE,
+  DISCOVER_TV
 } from '../gqlQueries'
 
 import {connect} from 'react-redux';
 
 function ExploreScreen({ navigation, route, darkMode }) {
-  console.log("refresha");
+  
+  const refreshCount = React.useRef(0);
+
+  React.useEffect(() => {
+    refreshCount.current++;
+  })
+  
+  console.log("refreshed " + refreshCount.current + " times");
 
   // =================================================================
   // React Hooks 
@@ -69,21 +77,31 @@ function ExploreScreen({ navigation, route, darkMode }) {
   const topRatedMoviesResponse = useQuery(MOVIE_TOP_RATED, { variables: { params: { page: 1 }}});
   const movieNowPlayingResponse= useQuery(MOVIE_NOW_PLAYING, { variables: { params: { page: 1 }}});
 
-  const movieResponses = genreObjectsArray.map((genre) => {
+  const movieGenres = genreObjectsArray.filter((item) => item.id);
+  const movieResponses = movieGenres.map((genre) => {
     return useQuery(DISCOVER_MOVIE, { variables: { params: { with_genres: genre.id.toString(), page: 1 }}})
-  })
+  });
+
+  const tvShowGenres = genreObjectsArray.filter((item) => item.tv_id);
+  const tvShowResponses = tvShowGenres.map((genre) => {
+    return useQuery(DISCOVER_TV, { variables: { params: { with_genres: genre.tv_id.toString(), page: 1 }}})
+  });
+  
 
   // =================================================================
   // Rendering loading component when data is loading 
   for(const response of movieResponses) { if (response.loading) return <DataLoadingComponent darkMode={darkMode} /> };
+  for(const response of tvShowResponses) { if (response.loading) return <DataLoadingComponent darkMode={darkMode} /> };
 
   // =================================================================
   // Rendering loading component when data is refetching 
   for(const response of movieResponses) { if (response.networkStatus == 4) return <DataLoadingComponent darkMode={darkMode} /> };
+  for(const response of tvShowResponses) { if (response.networkStatus == 4) return <DataLoadingComponent darkMode={darkMode} /> };
 
   // =================================================================
   // Rendering error component if at least one error occurs 
   for(const response of movieResponses) { if (response.error) return <DataErrorComponent props={response} darkMode={darkMode} /> };
+  for(const response of tvShowResponses) { if (response.error) return <DataErrorComponent props={response} darkMode={darkMode} /> };
 
   // =================================================================
   // DESTRUCTURING RESPONSE OBJECTS
@@ -96,13 +114,29 @@ function ExploreScreen({ navigation, route, darkMode }) {
       return (<MoviesCarousel movies={item} nav={navigation} setLoaded={setCarouselLoaded}/>)
     }
     else if((index%4) == 0) {
-      let movies = item.data.discoverMovie.results;
-      return (<MoviesScrollView movies={movies} nav={navigation} darkMode={darkMode}/>)
+      let isMovie = item.data.hasOwnProperty("discoverMovie");
+      let content = isMovie?item.data.discoverMovie.results:item.data.discoverTv.results;
+      
+      return (<ContentBackdropFlatList content={content} nav={navigation} darkMode={darkMode}/>)
     }
     else {
-      let sectionName = genres.get(parseInt(item.variables.params.with_genres))+" Movies";
-      let movies = item.data.discoverMovie.results;
-      return (<MoviesPosterScrollView sectionName={sectionName} movies={movies} darkMode={darkMode} nav={navigation} />)
+
+      return null;
+
+      let isMovie = item.data.hasOwnProperty("discoverMovie");
+      let content = isMovie?item.data.discoverMovie.results:item.data.discoverTv.results;
+      let genreId = parseInt(item.variables.params.with_genres);
+
+      let seeMoreQuery = isMovie?'DISCOVER_MOVIE':'DISCOVER_TV';
+
+      return (
+        <ContentPortraitFlatList 
+          sectionName={isMovie? genres.get(genreId) + " Movies": genres.get(genreId) + " TV Shows"} 
+          content={content} 
+          darkMode={darkMode} 
+          nav={navigation} 
+          seeMoreData={{ query: seeMoreQuery, variables: { with_genres: genreId }, titleQuery: isMovie?genres.get(genreId):genres.get(genreId) }}
+        />)
     }
   }
 
@@ -121,13 +155,13 @@ function ExploreScreen({ navigation, route, darkMode }) {
   // SCREEN RENDERING
 
   const carouselMovies = [movieNowPlaying, moviePopular][Math.floor(Math.random()*2)];
-  const movieArray = shuffle(movieResponses);
+  const contentArray = shuffle(movieResponses.concat(tvShowResponses));
   
   return (
     <View style={[darkMode?Style.darkContainer:Style.lightContainer,{ }]}>
 
       <FlatList
-        data={[carouselMovies].concat(movieArray)}
+        data={[carouselMovies].concat(contentArray)}
         initialNumToRender={5}
         renderItem={renderItem}
         keyExtractor={uuid}
