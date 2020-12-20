@@ -15,7 +15,7 @@ import Style from '../constants/Style';
 import Layout from '../constants/Layout';
 const { width, height } = Layout.window;
 
-export default function MoviesCarousel({movies, nav, setLoaded }) {
+export default function MoviesCarousel({movies, nav }) {
   // console.log(movies)
 
   const aspectRatio = 0.6;
@@ -35,7 +35,7 @@ export default function MoviesCarousel({movies, nav, setLoaded }) {
         autoplayInterval={5000}
         autoplayDelay={3000}
         data={movies}
-        renderItem={({item}) => <MovieCarouselCard props={item} nav={nav} setLoaded={setLoaded}/>}
+        renderItem={({item}) => <MovieCarouselCard props={item} nav={nav} />}
         sliderWidth={width}
         itemWidth={imageWidth}
         inactiveSlideOpacity={0.2}

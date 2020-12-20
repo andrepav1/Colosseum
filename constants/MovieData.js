@@ -1,46 +1,73 @@
-const genreObjectsArray = [
+const genres = [
   {
     "id": 28,
+    "name": "Action"
+  },
+  {
     "tv_id": 10759,
     "name": "Action"
   },
   {
     "id": 12,
+    "name": "Adventure"
+  },
+  {
     "tv_id": 10759,
     "name": "Adventure"
   },
   {
     "id": 16,
+    "name": "Animation"
+  },
+  {
     "tv_id": 16,
     "name": "Animation"
   },
   {
     "id": 35,
+    "name": "Comedy"
+  },
+  {
     "tv_id": 35,
     "name": "Comedy"
   },
   {
     "id": 80,
+    "name": "Crime"
+  },
+  {
     "tv_id": 80,
     "name": "Crime"
   },
   {
     "id": 99,
+    "name": "Documentary"
+  },
+  {
     "tv_id": 99,
     "name": "Documentary"
   },
   {
     "id": 18,
+    "name": "Drama"
+  },
+  {
     "tv_id": 18,
     "name": "Drama"
   },
   {
     "id": 10751,
+    "name": "Family"
+  },
+  {
     "tv_id": 10751,
     "name": "Family"
   },
   {
     "id": 14,
+    "name": "Fantasy"
+  },
+  {
     "tv_id": 10765,
     "name": "Fantasy"
   },
@@ -62,6 +89,9 @@ const genreObjectsArray = [
   },
   {
     "id": 9648,
+    "name": "Mystery"
+  },
+  {
     "tv_id": 9648,
     "name": "Mystery"
   },
@@ -79,8 +109,11 @@ const genreObjectsArray = [
   },
   {
     "id": 878,
-    "tv_id": 10765,
     "name": "Science Fiction"
+  },
+  {
+    "tv_id": 10765,
+    "name": "Sci-fi"
   },
   {
     "tv_id": 10766,
@@ -100,31 +133,27 @@ const genreObjectsArray = [
   },
   {
     "id": 10752,
+    "name": "War"
+  },
+  {
     "tv_id": 10768,
     "name": "War"
   },
   {
     "tv_id": 10768,
-    "name": "Politics"
+    "name": "Political"
   },
   {
     "id": 37,
+    "name": "Western"
+  },
+  {
     "tv_id": 37,
     "name": "Western"
   }
 ];
 
-const genres = new Map();
-
-for (const genreObj of genreObjectsArray) {
-  genres.set(genreObj.id, genreObj.name);
-}
-
-const assignNumbersArrayToGenre = (arr) => {
-  return arr.map((genreId) => genres.get(genreId));
-}
-
-const languagesObjectArray = [
+const languages = [
   {
       "iso_639_1": "xx",
       "english_name": "No Language",
@@ -1062,17 +1091,7 @@ const languagesObjectArray = [
   }
 ]
 
-const languages = new Map();
-
-for (const langObj of languagesObjectArray) {
-  languages.set(langObj.id, langObj.name);
-}
-
-const assignNumbersArrayToLanguage = (arr) => {
-  return arr.map((langId) => languages.get(langId));
-}
-
-const countriesObjectArray = [
+const countries = [
     {
         "iso_3166_1": "AD",
         "english_name": "Andorra"
@@ -2063,29 +2082,13 @@ const countriesObjectArray = [
     }
 ]
 
-const countries = new Map();
-
-for (const countryObj of countriesObjectArray) {
-  countries.set(countryObj.id, countryObj.name);
-}
-
-const assignNumbersArrayToCountry = (arr) => {
-  return arr.map((countryId) => countries.get(countryId));
-}
-
 const first_available_year = 1874;
 const last_available_year = 2028;
 const years = Array.from(Array(last_available_year-first_available_year+1).keys()).map(x => x + first_available_year);
 
 export {
   genres,
-  genreObjectsArray,
-  assignNumbersArrayToGenre,
   languages,
-  languagesObjectArray,
-  assignNumbersArrayToLanguage,
   countries,
-  countriesObjectArray, 
-  assignNumbersArrayToCountry,
   years
 };

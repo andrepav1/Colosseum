@@ -11,7 +11,7 @@ const { width, height } = Layout.window;
 
 const POSTER_PATH = 'https://image.tmdb.org/t/p/w780/';
 
-export default function MovieCarouselCard({props, nav, setLoaded}) {
+export default function MovieCarouselCard({props, nav}) {
   // console.log(props)
 
   const aspectRatio = 0.56;
@@ -24,7 +24,7 @@ export default function MovieCarouselCard({props, nav, setLoaded}) {
 
   // Keep track of how many images are loaded, so that we can show carousel when all images are loaded
   const onLoadEndHandler = () => {
-    setLoaded(true);
+    // Loaded
   }
 
   return (

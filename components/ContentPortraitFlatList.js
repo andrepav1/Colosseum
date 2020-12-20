@@ -6,15 +6,28 @@ import uuid from 'uuid-random';
 import ContentPortraitCard from './movieCards/ContentPortraitCard';
 import { MonoText, MonoTextBold } from './StyledText';
 
+import DataErrorComponent from './DataErrorComponent'
+
 // constants
 import Colors from '../constants/Colors';
 import Style from '../constants/Style';
 import Layout from '../constants/Layout';
 
-export default function ContentPortraitFlatList({sectionName, content, darkMode, seeMoreData, nav}) {
+import { useQuery } from '@apollo/react-hooks';
 
-  if(content.length == 0) return null;
+export default function ContentPortraitFlatList({query, params, label, darkMode, seeMoreData, nav}) {
+  
+  // =================================================================
+  // useQuery hook 
+  const { data, loading, error, refetch } = useQuery(query, { variables: { params }});
+  
+  if (loading) return null
+  if (error) return null
 
+  const content = data[Object.keys(data)[0]].results
+  
+  let isMovie = content[0]["__typename"] === "MovieBasic"
+  
   const renderItem = ({item}) => {
     return (
       <View style={{ paddingHorizontal: 4 }}>
@@ -24,15 +37,14 @@ export default function ContentPortraitFlatList({sectionName, content, darkMode,
   }
     
   const seeMoreHandler = (genre) => {
-    const { query, variables, titleQuery } = seeMoreData;
-    nav.navigate("MultipleMoviesScreen", { query, variables: { ...variables, page: 1 }, titleQuery });
+    nav.navigate("MultipleMoviesScreen", { query, variables: { ...params, page: 1 }, titleQuery: label });
   }
 
   return (
     <View style={styles.contentContainer}>
       <View style={{ flexDirection: "row", }}>
         <View style={{ width: "75%" }}>
-          <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ textAlign: "left", paddingLeft: 16 }]}>{sectionName}</MonoTextBold>
+          <MonoTextBold style={[darkMode?Style.mediumLightText:Style.mediumDarkText,{ textAlign: "left", paddingLeft: 16 }]}>{label}</MonoTextBold>
         </View>
         <View style={{ width: "25%" }}>
           <TouchableOpacity onPress={() => { seeMoreHandler() }}>

@@ -8,14 +8,14 @@ import Colors from '../constants/Colors';
 import Style from '../constants/Style';
 import Layout from '../constants/Layout';
 
-export default function DataErrorComponent({props, darkMode}) {
+export default function DataErrorComponent({refetch, darkMode}) {
   
   React.useEffect(() => {
-    setTimeout(props.refetch, 500);
+    setTimeout(refetch, 500);
   },[])
 
   const refetchHandler = () => {
-    props.refetch();
+    refetch();
   }
   
   return (
