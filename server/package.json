@@ -1,0 +1,15 @@
+{
+  "description": "getMovied Backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./app",
+    "dev": "nodemon ./app"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.15.0",
+    "express": "^4.17.1",
+    "moviedb-promise": "^3.0.3",
+    "nodemon": "^2.0.4"
+  }
+}
