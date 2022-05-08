@@ -22,6 +22,7 @@
     "apollo-boost": "^0.4.9",
     "expo": "~37.0.9",
     "expo-asset": "~8.1.0",
+    "expo-cli": "^4.12.1",
     "expo-constants": "~9.0.0",
     "expo-font": "~8.1.0",
     "expo-linking": "^1.0.1",
